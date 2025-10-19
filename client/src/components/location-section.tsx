@@ -13,20 +13,23 @@ export function LocationSection() {
     {
       icon: MapPin,
       title: "Address",
-      content: "123 Rue de Paris, City Center",
+      content: "Crêperie Kinder 5, Algeria",
       action: "Get Directions",
+      link: "https://maps.app.goo.gl/q2Fzgr1BJifGT5A88",
     },
     {
       icon: Phone,
       title: "Phone",
-      content: "+33 1 23 45 67 89",
+      content: "+213 XX XX XX XX",
       action: "Call Us",
+      link: "tel:+213XXXXXXXX",
     },
     {
       icon: Mail,
       title: "Email",
-      content: "hello@creperie-kinder5.fr",
+      content: "contact@kinder5.dz",
       action: "Send Email",
+      link: "mailto:contact@kinder5.dz",
     },
   ];
 
@@ -88,12 +91,15 @@ export function LocationSection() {
                     <div className="flex-1">
                       <h3 className="font-medium mb-1">{info.title}</h3>
                       <p className="text-muted-foreground mb-2">{info.content}</p>
-                      <button
+                      <a
+                        href={info.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-sm text-primary hover:underline"
                         data-testid={`button-${info.title.toLowerCase()}`}
                       >
                         {info.action}
-                      </button>
+                      </a>
                     </div>
                   </div>
                 ))}

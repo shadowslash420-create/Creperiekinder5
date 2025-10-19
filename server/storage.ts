@@ -86,7 +86,13 @@ export class MemStorage implements IStorage {
     ];
 
     categoriesData.forEach(category => {
-      this.categories.set(category.id, category);
+      const cat: Category = {
+        id: category.id,
+        name: category.name,
+        description: category.description ?? null,
+        order: category.order ?? 0,
+      };
+      this.categories.set(cat.id, cat);
     });
 
     const menuItemsData: MenuItem[] = [
@@ -149,7 +155,17 @@ export class MemStorage implements IStorage {
     ];
 
     menuItemsData.forEach(item => {
-      this.menuItems.set(item.id, item);
+      const menuItem: MenuItem = {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        categoryId: item.categoryId,
+        imageUrl: item.imageUrl ?? null,
+        available: item.available ?? true,
+        popular: item.popular ?? false,
+      };
+      this.menuItems.set(menuItem.id, menuItem);
     });
   }
 
@@ -197,8 +213,14 @@ export class MemStorage implements IStorage {
   async createReservation(insertReservation: InsertReservation): Promise<Reservation> {
     const id = randomUUID();
     const reservation: Reservation = {
-      ...insertReservation,
       id,
+      name: insertReservation.name,
+      email: insertReservation.email,
+      phone: insertReservation.phone,
+      date: insertReservation.date,
+      time: insertReservation.time,
+      partySize: insertReservation.partySize,
+      specialRequests: insertReservation.specialRequests ?? null,
       status: "pending",
       createdAt: new Date(),
     };
@@ -215,8 +237,15 @@ export class MemStorage implements IStorage {
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
     const id = randomUUID();
     const order: Order = {
-      ...insertOrder,
       id,
+      customerName: insertOrder.customerName,
+      customerEmail: insertOrder.customerEmail,
+      customerPhone: insertOrder.customerPhone,
+      items: insertOrder.items,
+      totalAmount: insertOrder.totalAmount,
+      orderType: insertOrder.orderType,
+      deliveryAddress: insertOrder.deliveryAddress ?? null,
+      notes: insertOrder.notes ?? null,
       status: "pending",
       createdAt: new Date(),
     };

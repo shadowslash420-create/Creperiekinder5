@@ -27,11 +27,10 @@ export function MenuSection() {
             Our Menu
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Handcrafted Crêpes
+            Notre Menu
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Each crêpe is made to order using traditional French techniques and
-            the finest ingredients
+            Découvrez nos délicieuses crêpes, cheesecakes, donuts et boissons
           </p>
         </div>
 
@@ -88,7 +87,7 @@ export function MenuSection() {
                               className="text-xl font-bold text-primary whitespace-nowrap"
                               data-testid={`price-${item.id}`}
                             >
-                              €{item.price}
+                              {item.price} DA
                             </span>
                           </div>
                         </CardHeader>
