@@ -61,17 +61,27 @@ export function MenuSection() {
                       {category.description}
                     </p>
                   )}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {items.map((item) => (
                       <Card
                         key={item.id}
-                        className="hover-elevate transition-shadow"
+                        className="hover-elevate transition-shadow overflow-hidden"
                         data-testid={`menu-item-${item.id}`}
                       >
+                        {item.imageUrl && (
+                          <div className="aspect-square overflow-hidden bg-muted">
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                              data-testid={`img-${item.id}`}
+                            />
+                          </div>
+                        )}
                         <CardHeader>
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
-                              <CardTitle className="text-xl mb-2 flex items-center gap-2">
+                              <CardTitle className="text-xl mb-2 flex items-center gap-2 flex-wrap">
                                 {item.name}
                                 {item.popular && (
                                   <Badge variant="secondary" className="text-xs">

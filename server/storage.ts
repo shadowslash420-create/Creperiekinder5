@@ -89,69 +89,69 @@ export class MemStorage implements IStorage {
       const cat: Category = {
         id: category.id,
         name: category.name,
-        description: category.description,
+        description: category.description ?? null,
         order: category.order,
       };
       this.categories.set(cat.id, cat);
     });
 
     const menuItemsData = [
-      { id: randomUUID(), name: "Guermeche", description: "Crêpe Guermeche", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Chocolat", description: "Crêpe au chocolat", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Pistache", description: "Crêpe à la pistache", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Nutela", description: "Crêpe au Nutella", price: "400", categoryId: "crepe", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Lotus", description: "Crêpe au Lotus", price: "400", categoryId: "crepe", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Kinder", description: "Crêpe au Kinder", price: "700", categoryId: "crepe", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Pasta", description: "Crêpe Pasta", price: "300", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Farsi", description: "Crêpe Farsi", price: "500", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Sushi", description: "Crêpe Sushi", price: "350", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Mordjan", description: "Crêpe Mordjan", price: "400", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Willy", description: "Crêpe Willy", price: "300", categoryId: "crepe", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Dubai", description: "Crêpe Dubai", price: "700", categoryId: "crepe", imageUrl: null, available: true, popular: true },
+      { id: randomUUID(), name: "Guermeche", description: "Crêpe Guermeche", price: "250", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Chocolat", description: "Crêpe au chocolat", price: "250", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Pistache", description: "Crêpe à la pistache", price: "250", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Nutela", description: "Crêpe au Nutella", price: "400", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Lotus", description: "Crêpe au Lotus", price: "400", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Kinder", description: "Crêpe au Kinder", price: "700", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Pasta", description: "Crêpe Pasta", price: "300", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Farsi", description: "Crêpe Farsi", price: "500", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Sushi", description: "Crêpe Sushi", price: "350", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Mordjan", description: "Crêpe Mordjan", price: "400", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Willy", description: "Crêpe Willy", price: "300", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Dubai", description: "Crêpe Dubai", price: "700", categoryId: "crepe", imageUrl: "/attached_assets/Screenshot_20251019_080540_Instagram_1760913814355.jpg", available: true, popular: true },
 
-      { id: randomUUID(), name: "Bueno", description: "Cheesecake Bueno", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Fraise", description: "Cheesecake à la fraise", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Citron", description: "Cheesecake au citron", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Oreo", description: "Cheesecake Oreo", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Lotus", description: "Cheesecake Lotus", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Dubai", description: "Cheesecake Dubai", price: "600", categoryId: "cheesecake", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "San Sebastian", description: "Cheesecake San Sebastian", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Framboise", description: "Cheesecake à la framboise", price: "500", categoryId: "cheesecake", imageUrl: null, available: true, popular: false },
+      { id: randomUUID(), name: "Bueno", description: "Cheesecake Bueno", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Fraise", description: "Cheesecake à la fraise", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Citron", description: "Cheesecake au citron", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Oreo", description: "Cheesecake Oreo", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Lotus", description: "Cheesecake Lotus", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Dubai", description: "Cheesecake Dubai", price: "600", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "San Sebastian", description: "Cheesecake San Sebastian", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Framboise", description: "Cheesecake à la framboise", price: "500", categoryId: "cheesecake", imageUrl: "/attached_assets/Screenshot_20251019_080608_Instagram_1760913814252.jpg", available: true, popular: false },
 
-      { id: randomUUID(), name: "Chocolat", description: "Donut au chocolat", price: "300", categoryId: "donuts", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Miel-Caramel", description: "Donut miel-caramel", price: "300", categoryId: "donuts", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Banane", description: "Donut à la banane", price: "400", categoryId: "donuts", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Fruit", description: "Donut aux fruits", price: "450", categoryId: "donuts", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Kinder", description: "Donut Kinder", price: "700", categoryId: "donuts", imageUrl: null, available: true, popular: true },
+      { id: randomUUID(), name: "Chocolat", description: "Donut au chocolat", price: "300", categoryId: "donuts", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Miel-Caramel", description: "Donut miel-caramel", price: "300", categoryId: "donuts", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Banane", description: "Donut à la banane", price: "400", categoryId: "donuts", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Fruit", description: "Donut aux fruits", price: "450", categoryId: "donuts", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Kinder", description: "Donut Kinder", price: "700", categoryId: "donuts", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: true },
 
-      { id: randomUUID(), name: "Choco", description: "Mini-pancakes au chocolat", price: "300", categoryId: "mini-pancakes", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Miel-Caramel", description: "Mini-pancakes miel-caramel", price: "300", categoryId: "mini-pancakes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Banane", description: "Mini-pancakes à la banane", price: "400", categoryId: "mini-pancakes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Fruit", description: "Mini-pancakes aux fruits", price: "450", categoryId: "mini-pancakes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Kinder", description: "Mini-pancakes Kinder", price: "700", categoryId: "mini-pancakes", imageUrl: null, available: true, popular: true },
+      { id: randomUUID(), name: "Choco", description: "Mini-pancakes au chocolat", price: "300", categoryId: "mini-pancakes", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Miel-Caramel", description: "Mini-pancakes miel-caramel", price: "300", categoryId: "mini-pancakes", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Banane", description: "Mini-pancakes à la banane", price: "400", categoryId: "mini-pancakes", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Fruit", description: "Mini-pancakes aux fruits", price: "450", categoryId: "mini-pancakes", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Kinder", description: "Mini-pancakes Kinder", price: "700", categoryId: "mini-pancakes", imageUrl: "/attached_assets/Screenshot_20251019_080546_Instagram_1760913814335.jpg", available: true, popular: true },
 
-      { id: randomUUID(), name: "Jus Banane", description: "Jus de banane frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Jus Orange", description: "Jus d'orange frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Jus Fraise", description: "Jus de fraise frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Jus Kiwi", description: "Jus de kiwi frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Jus Citron", description: "Jus de citron frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Jus Pêche", description: "Jus de pêche frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Jus Grenadine", description: "Jus de grenadine frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Jus Cocktail", description: "Jus cocktail de fruits", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Jus Ananas", description: "Jus d'ananas frais", price: "300", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Pink Lady", description: "Pink Lady", price: "450", categoryId: "boissons-fraiches", imageUrl: null, available: true, popular: true },
+      { id: randomUUID(), name: "Jus Banane", description: "Jus de banane frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Jus Orange", description: "Jus d'orange frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Jus Fraise", description: "Jus de fraise frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Jus Kiwi", description: "Jus de kiwi frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Jus Citron", description: "Jus de citron frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Jus Pêche", description: "Jus de pêche frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Jus Grenadine", description: "Jus de grenadine frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Jus Cocktail", description: "Jus cocktail de fruits", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Jus Ananas", description: "Jus d'ananas frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Pink Lady", description: "Pink Lady", price: "450", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
 
-      { id: randomUUID(), name: "Café", description: "Café", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Café au Lait", description: "Café au lait", price: "200", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Café Days", description: "Café Days", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Thé Citron", description: "Thé au citron", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Thé Pomme", description: "Thé à la pomme", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Nescafé", description: "Nescafé", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Lipton", description: "Lipton", price: "150", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Choco Chaud", description: "Chocolat chaud", price: "300", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: true },
-      { id: randomUUID(), name: "Lavazza", description: "Café Lavazza", price: "200", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Lof", description: "Lof", price: "200", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: false },
-      { id: randomUUID(), name: "Espresso", description: "Espresso", price: "200", categoryId: "boissons-chaudes", imageUrl: null, available: true, popular: true },
+      { id: randomUUID(), name: "Café", description: "Café", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Café au Lait", description: "Café au lait", price: "200", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Café Days", description: "Café Days", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Thé Citron", description: "Thé au citron", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Thé Pomme", description: "Thé à la pomme", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Nescafé", description: "Nescafé", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Lipton", description: "Lipton", price: "150", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Choco Chaud", description: "Chocolat chaud", price: "300", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Lavazza", description: "Café Lavazza", price: "200", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Lof", description: "Lof", price: "200", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Espresso", description: "Espresso", price: "200", categoryId: "boissons-chaudes", imageUrl: "/attached_assets/Screenshot_20251019_080601_Instagram_1760913814275.jpg", available: true, popular: true },
     ];
 
     menuItemsData.forEach(item => {
@@ -161,7 +161,7 @@ export class MemStorage implements IStorage {
         description: item.description,
         price: item.price,
         categoryId: item.categoryId,
-        imageUrl: item.imageUrl,
+        imageUrl: item.imageUrl ?? null,
         available: item.available,
         popular: item.popular,
       };
@@ -175,7 +175,12 @@ export class MemStorage implements IStorage {
 
   async createCategory(insertCategory: InsertCategory): Promise<Category> {
     const id = insertCategory.name.toLowerCase().replace(/\s+/g, '-');
-    const category: Category = { ...insertCategory, id };
+    const category: Category = {
+      id,
+      name: insertCategory.name,
+      description: insertCategory.description ?? null,
+      order: insertCategory.order ?? 0,
+    };
     this.categories.set(id, category);
     return category;
   }
@@ -190,7 +195,16 @@ export class MemStorage implements IStorage {
 
   async createMenuItem(insertItem: InsertMenuItem): Promise<MenuItem> {
     const id = randomUUID();
-    const item: MenuItem = { ...insertItem, id };
+    const item: MenuItem = {
+      id,
+      name: insertItem.name,
+      description: insertItem.description,
+      price: insertItem.price,
+      categoryId: insertItem.categoryId,
+      imageUrl: insertItem.imageUrl ?? null,
+      available: insertItem.available ?? true,
+      popular: insertItem.popular ?? false,
+    };
     this.menuItems.set(id, item);
     return item;
   }
