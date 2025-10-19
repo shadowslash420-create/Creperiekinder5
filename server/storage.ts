@@ -46,41 +46,41 @@ export class MemStorage implements IStorage {
   }
 
   private initializeDefaultData() {
-    const categoriesData: Category[] = [
+    const categoriesData = [
       {
         id: "crepe",
         name: "Crêpe",
-        description: "Délicieuses crêpes artisanales",
+        description: "Délicieuses crêpes artisanales" as string | null,
         order: 1,
       },
       {
         id: "cheesecake",
         name: "Cheesecake",
-        description: "Cheesecakes onctueux et savoureux",
+        description: "Cheesecakes onctueux et savoureux" as string | null,
         order: 2,
       },
       {
         id: "donuts",
         name: "Donuts",
-        description: "Donuts moelleux et gourmands",
+        description: "Donuts moelleux et gourmands" as string | null,
         order: 3,
       },
       {
         id: "mini-pancakes",
         name: "Mini-Pancakes",
-        description: "Mini-pancakes délicieux",
+        description: "Mini-pancakes délicieux" as string | null,
         order: 4,
       },
       {
         id: "boissons-fraiches",
         name: "Boissons Fraîches",
-        description: "Jus de fruits frais",
+        description: "Jus de fruits frais" as string | null,
         order: 5,
       },
       {
         id: "boissons-chaudes",
         name: "Boissons Chaudes",
-        description: "Café, thé et boissons chaudes",
+        description: "Café, thé et boissons chaudes" as string | null,
         order: 6,
       },
     ];
@@ -89,13 +89,13 @@ export class MemStorage implements IStorage {
       const cat: Category = {
         id: category.id,
         name: category.name,
-        description: category.description ?? null,
-        order: category.order ?? 0,
+        description: category.description,
+        order: category.order,
       };
       this.categories.set(cat.id, cat);
     });
 
-    const menuItemsData: MenuItem[] = [
+    const menuItemsData = [
       { id: randomUUID(), name: "Guermeche", description: "Crêpe Guermeche", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: false },
       { id: randomUUID(), name: "Chocolat", description: "Crêpe au chocolat", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: true },
       { id: randomUUID(), name: "Pistache", description: "Crêpe à la pistache", price: "250", categoryId: "crepe", imageUrl: null, available: true, popular: false },
@@ -161,9 +161,9 @@ export class MemStorage implements IStorage {
         description: item.description,
         price: item.price,
         categoryId: item.categoryId,
-        imageUrl: item.imageUrl ?? null,
-        available: item.available ?? true,
-        popular: item.popular ?? false,
+        imageUrl: item.imageUrl,
+        available: item.available,
+        popular: item.popular,
       };
       this.menuItems.set(menuItem.id, menuItem);
     });

@@ -40,7 +40,7 @@ export function ReservationSection() {
       date: "",
       time: "",
       partySize: 2,
-      specialRequests: "",
+      specialRequests: undefined,
     },
   });
 

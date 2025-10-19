@@ -87,7 +87,7 @@ export function MenuSection() {
                               className="text-xl font-bold text-primary whitespace-nowrap"
                               data-testid={`price-${item.id}`}
                             >
-                              {item.price} DA
+                              {item.price} DZD
                             </span>
                           </div>
                         </CardHeader>
