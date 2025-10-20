@@ -622,21 +622,6 @@
   animation: rotate-smooth 20s linear infinite;
 }
 
-@keyframes rotate-3d {
-  0% {
-    transform: rotateY(0deg) rotateX(5deg);
-  }
-  100% {
-    transform: rotateY(360deg) rotateX(5deg);
-  }
-}
-
-.rotate-3d-egg {
-  animation: rotate-3d 4s linear infinite;
-  transform-style: preserve-3d;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-}
-
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), 0 0 40px rgba(220, 38, 38, 0.15);
