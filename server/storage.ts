@@ -72,16 +72,28 @@ export class MemStorage implements IStorage {
         order: 4,
       },
       {
+        id: "fondant",
+        name: "Fondant",
+        description: "Fondants au chocolat fondant" as string | null,
+        order: 5,
+      },
+      {
+        id: "tiramisu",
+        name: "Tiramisu",
+        description: "Tiramisu traditionnel et créatif" as string | null,
+        order: 6,
+      },
+      {
         id: "boissons-fraiches",
         name: "Boissons Fraîches",
         description: "Jus de fruits frais" as string | null,
-        order: 5,
+        order: 7,
       },
       {
         id: "boissons-chaudes",
         name: "Boissons Chaudes",
         description: "Café, thé et boissons chaudes" as string | null,
-        order: 6,
+        order: 8,
       },
     ];
 
@@ -129,6 +141,16 @@ export class MemStorage implements IStorage {
       { id: randomUUID(), name: "Banane", description: "Mini-pancakes à la banane", price: "400", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Fruit", description: "Mini-pancakes aux fruits", price: "450", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Kinder", description: "Mini-pancakes Kinder", price: "700", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: true },
+
+      { id: randomUUID(), name: "Chocolat", description: "Fondant au chocolat", price: "500", categoryId: "fondant", imageUrl: "/attached_assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png", available: true, popular: true },
+      { id: randomUUID(), name: "Nutella", description: "Fondant au Nutella", price: "650", categoryId: "fondant", imageUrl: "/attached_assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png", available: true, popular: true },
+      { id: randomUUID(), name: "Au Noix", description: "Fondant aux noix", price: "650", categoryId: "fondant", imageUrl: "/attached_assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png", available: true, popular: false },
+      { id: randomUUID(), name: "Pistache", description: "Fondant à la pistache", price: "800", categoryId: "fondant", imageUrl: "/attached_assets/stock_images/pistachio_dessert_dc6583a5.jpg", available: true, popular: true },
+
+      { id: randomUUID(), name: "Simple", description: "Tiramisu simple", price: "300", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
+      { id: randomUUID(), name: "Banane", description: "Tiramisu à la banane", price: "400", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Fruit", description: "Tiramisu aux fruits", price: "450", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
+      { id: randomUUID(), name: "Kinder", description: "Tiramisu Kinder", price: "700", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
 
       { id: randomUUID(), name: "Jus Banane", description: "Jus de banane frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/stock_images/orange_juice_glass_9aef8a57.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Jus Orange", description: "Jus d'orange frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/stock_images/orange_juice_glass_9aef8a57.jpg", available: true, popular: true },

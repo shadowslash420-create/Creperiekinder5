@@ -1,12 +1,30 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import type { MenuItem, Category } from "@shared/schema";
+import crepeImg from "@assets/generated_images/Chocolate_crepe_dessert_7dcc0141.png";
+import cheesecakeImg from "@assets/generated_images/Strawberry_cheesecake_slice_f00164f4.png";
+import donutImg from "@assets/generated_images/Colorful_glazed_donuts_99c8d4cb.png";
+import pancakeImg from "@assets/generated_images/Mini_pancakes_stack_a442a392.png";
+import fondantImg from "@assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png";
+import tiramisuImg from "@assets/Screenshot_20251020_105029_Instagram_1760953849027.jpg";
+
+const categoryImages: Record<string, string> = {
+  "crepe": crepeImg,
+  "cheesecake": cheesecakeImg,
+  "donuts": donutImg,
+  "mini-pancakes": pancakeImg,
+  "fondant": fondantImg,
+  "tiramisu": tiramisuImg,
+  "boissons-fraiches": "/attached_assets/stock_images/orange_juice_glass_9aef8a57.jpg",
+  "boissons-chaudes": "/attached_assets/stock_images/coffee_cup_latte_8d49a53a.jpg",
+};
 
 export function CategoryCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
@@ -87,6 +105,7 @@ export function CategoryCarousel() {
                 <div className="flex">
                   {categoriesWithItems?.map((category) => {
                     const items = getItemsByCategory(category.id);
+                    const categoryImage = categoryImages[category.id];
                     
                     return (
                       <div
@@ -97,14 +116,39 @@ export function CategoryCarousel() {
                         <div className="mb-8">
                           <h3 className="text-3xl font-bold mb-2 text-center">{category.name}</h3>
                           {category.description && (
-                            <p className="text-muted-foreground text-lg text-center mb-8">
+                            <p className="text-muted-foreground text-lg text-center mb-4">
                               {category.description}
                             </p>
                           )}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {items.slice(0, 6).map((item) => (
+                        <Card className="overflow-hidden hover-elevate transition-all group cursor-pointer max-w-4xl mx-auto mb-8">
+                          <Link href="/menu">
+                            <div className="relative aspect-video overflow-hidden bg-muted">
+                              <img
+                                src={categoryImage}
+                                alt={category.name}
+                                className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                                data-testid={`img-category-hero-${category.id}`}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end justify-center p-8">
+                                <Button size="lg" variant="secondary" className="gap-2" data-testid="button-view-category">
+                                  View {category.name} Menu
+                                  <ArrowRight className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </Link>
+                        </Card>
+
+                        <div className="text-center mb-6">
+                          <Badge variant="outline" className="text-base px-4 py-2">
+                            {items.length} {items.length === 1 ? 'item' : 'items'} available
+                          </Badge>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {items.slice(0, 8).map((item) => (
                             <Card
                               key={item.id}
                               className="hover-elevate transition-shadow overflow-hidden"
@@ -120,29 +164,22 @@ export function CategoryCarousel() {
                                   />
                                 </div>
                               )}
-                              <CardHeader>
-                                <div className="flex items-start justify-between gap-4">
-                                  <div className="flex-1">
-                                    <CardTitle className="text-xl mb-2 flex items-center gap-2 flex-wrap">
-                                      {item.name}
-                                      {item.popular && (
-                                        <Badge variant="secondary" className="text-xs">
-                                          Popular
-                                        </Badge>
-                                      )}
-                                    </CardTitle>
-                                    <CardDescription className="text-base leading-relaxed">
-                                      {item.description}
-                                    </CardDescription>
-                                  </div>
-                                  <span
-                                    className="text-xl font-bold text-primary whitespace-nowrap"
-                                    data-testid={`price-${item.id}`}
-                                  >
-                                    {item.price} DZD
+                              <CardContent className="p-3">
+                                <h4 className="font-semibold text-sm mb-1">{item.name}</h4>
+                                <p className="text-xs text-muted-foreground mb-2 line-clamp-1">
+                                  {item.description}
+                                </p>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm font-bold text-primary" data-testid={`price-${item.id}`}>
+                                    {item.price} DA
                                   </span>
+                                  {item.popular && (
+                                    <Badge variant="secondary" className="text-xs py-0">
+                                      Popular
+                                    </Badge>
+                                  )}
                                 </div>
-                              </CardHeader>
+                              </CardContent>
                             </Card>
                           ))}
                         </div>
