@@ -6,6 +6,13 @@ Crêperie Kinder 5 is a modern restaurant website for an authentic French crêpe
 
 ## Recent Changes (October 20, 2025)
 
+**3D Interactive Logo (Latest)**
+- Integrated rotating 3D Kinder Surprise egg model in navigation header using Three.js
+- React Three Fiber (@react-three/fiber v8.17.10) and Drei (@react-three/drei v9.114.3) for React integration
+- Custom RotatingModel component with error boundary for graceful fallback
+- Gradient circle fallback for browsers without WebGL support
+- GLB file format support added to Vite configuration
+
 **Shopping Cart & E-commerce**
 - Full shopping cart system with persistent localStorage state management via CartContext
 - Add-to-cart buttons on all menu items with visual feedback (toast notifications)
