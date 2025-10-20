@@ -2,7 +2,29 @@
 
 ## Overview
 
-Crêperie Kinder 5 is a modern restaurant website for an authentic French crêperie. The application allows customers to browse the menu, learn about the restaurant, view location information, and make reservations. Built as a full-stack web application, it features a React frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence.
+Crêperie Kinder 5 is a modern restaurant website for an authentic French crêperie with full e-commerce capabilities. The application allows customers to browse the menu, add items to a shopping cart, place orders with personal information, make reservations, and learn about the restaurant. Built as a full-stack web application, it features a React frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence.
+
+## Recent Changes (October 20, 2025)
+
+**Shopping Cart & E-commerce**
+- Full shopping cart system with persistent localStorage state management via CartContext
+- Add-to-cart buttons on all menu items with visual feedback (toast notifications)
+- Cart icon in navigation bar showing real-time item count
+- Dedicated cart page with quantity controls, item removal, and total price calculation
+- Checkout flow with customer information form (first name, last name, phone, email, message/timestamp)
+- Order submission to backend API endpoint with cart clearing on success
+
+**Visual & UX Enhancements**
+- Luxurious golden/amber color scheme replacing previous red accents for premium aesthetic
+- Animated crepe background on hero section with floating circular elements
+- Golden glow effect on logo and primary UI elements
+- Enhanced typography and spacing for sophisticated feel
+- Improved shadows and elevation for depth
+
+**Performance Optimizations**
+- Route-based code splitting with React.lazy and Suspense
+- Lazy loading for all page components to reduce initial bundle size
+- Custom loading state for route transitions
 
 ## User Preferences
 
@@ -27,13 +49,15 @@ Preferred communication style: Simple, everyday language.
 **State Management**
 - TanStack Query (React Query) for server state management, data fetching, and caching
 - React Hook Form with Zod validation for form state and validation
-- Context API for theme management
+- Context API for theme management and shopping cart state
+- CartContext provides global cart state with localStorage persistence
 
 **Component Organization**
-- Page components in `client/src/pages/`
+- Page components in `client/src/pages/` (home, menu, cart, checkout, about, reservations, contact)
 - Reusable UI components in `client/src/components/ui/`
 - Feature-specific components in `client/src/components/`
-- Shared type definitions in `shared/schema.ts`
+- Shared type definitions in `shared/schema.ts` and `shared/cart-types.ts`
+- Context providers in `client/src/contexts/` (CartContext, ThemeProvider)
 
 ### Backend Architecture
 
@@ -85,11 +109,12 @@ Preferred communication style: Simple, everyday language.
 - Component-specific color variables (card, popover, sidebar borders)
 
 **Design Tokens**
-- Primary color: Purple (250° hue) for CTAs and branding
+- Primary color: Golden/Amber (45° hue) for premium luxurious feel, CTAs and branding
 - Accent color: Green (160° hue) for success states
 - Neutral grays for backgrounds and text with subtle hue (240°)
 - Elevation system using semi-transparent overlays for hover/active states
 - Shadow system for depth and visual hierarchy
+- Custom animations: floating crepe circles, golden glow effects
 
 ## External Dependencies
 
