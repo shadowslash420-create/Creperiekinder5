@@ -51,7 +51,7 @@ export function HeroSection() {
           Crêperie Kinder 5
         </h1>
         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Experience the authentic taste of France with our handcrafted crêpes.
+          Experience the authentic taste of Algeria with our handcrafted crêpes.
           From sweet to savory, each creation is made with traditional recipes
           and the finest ingredients.
         </p>

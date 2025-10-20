@@ -11,7 +11,7 @@ export default function AboutPage() {
       icon: ChefHat,
       title: "Traditional Recipes",
       description:
-        "Authentic French techniques passed down through generations, ensuring every crêpe is perfect.",
+        "Authentic Algerian techniques passed down through generations, ensuring every crêpe is perfect.",
     },
     {
       icon: Heart,
@@ -47,13 +47,13 @@ export default function AboutPage() {
                 Our Story
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-                Bringing France to Your Table
+                Bringing Algeria to Your Table
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 Since opening our doors, Crêperie Kinder 5 has been dedicated to
-                bringing the authentic taste of France to our community. Our passion
-                for traditional French cuisine drives us to create exceptional crêpes
-                that transport you to the streets of Paris with every bite.
+                bringing the authentic taste of Algeria to our community. Our passion
+                for traditional Algerian cuisine drives us to create exceptional crêpes
+                that transport you to the streets of Algiers with every bite.
               </p>
 
               <div className="space-y-6">

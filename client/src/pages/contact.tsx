@@ -48,7 +48,7 @@ export default function ContactPage() {
               Contact & Location
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Come visit us and experience authentic French crêpes in a warm,
+              Come visit us and experience authentic Algerian crêpes in a warm,
               welcoming atmosphere
             </p>
           </div>

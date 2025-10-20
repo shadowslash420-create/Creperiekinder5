@@ -11,8 +11,8 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Crêperie Kinder 5</h3>
             <p className="text-muted-foreground leading-relaxed">
-              Authentic French crêpes made with love and tradition. Experience
-              the taste of France in every bite.
+              Authentic Algerian crêpes made with love and tradition. Experience
+              the taste of Algeria in every bite.
             </p>
           </div>
 
