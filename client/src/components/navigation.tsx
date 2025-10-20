@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -11,52 +12,34 @@ import {
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
-    }
-  };
-
   const navItems = [
-    { label: "Menu", id: "menu" },
-    { label: "About", id: "about" },
-    { label: "Location", id: "location" },
-    { label: "Reservations", id: "reservations" },
+    { label: "Menu", path: "/menu" },
+    { label: "About", path: "/about" },
+    { label: "Reservations", path: "/reservations" },
+    { label: "Contact", path: "/contact" },
   ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md bg-background/80">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <button
-            onClick={() => scrollToSection("hero")}
-            className="text-xl md:text-2xl font-bold tracking-tight hover-elevate active-elevate-2 rounded-lg px-2 py-1 -ml-2"
-            data-testid="link-home"
-          >
+          <Link href="/" className="text-xl md:text-2xl font-bold tracking-tight hover-elevate active-elevate-2 rounded-lg px-2 py-1 -ml-2" data-testid="link-home">
             Crêperie Kinder 5
-          </button>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hover-elevate rounded-md px-3 py-2"
-                data-testid={`link-${item.id}`}
-              >
+              <Link key={item.path} href={item.path} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hover-elevate rounded-md px-3 py-2" data-testid={`link-${item.label.toLowerCase()}`}>
                 {item.label}
-              </button>
+              </Link>
             ))}
             <ThemeToggle />
-            <Button
-              onClick={() => scrollToSection("reservations")}
-              data-testid="button-reserve-cta"
-            >
-              Reserve Table
-            </Button>
+            <Link href="/reservations">
+              <Button data-testid="button-reserve-cta">
+                Reserve Table
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Navigation */}
@@ -71,22 +54,15 @@ export function Navigation() {
               <SheetContent>
                 <div className="flex flex-col gap-6 mt-8">
                   {navItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollToSection(item.id)}
-                      className="text-lg font-medium hover-elevate rounded-md px-4 py-3 text-left"
-                      data-testid={`link-mobile-${item.id}`}
-                    >
+                    <Link key={item.path} href={item.path} onClick={() => setIsOpen(false)} className="text-lg font-medium hover-elevate rounded-md px-4 py-3 text-left" data-testid={`link-mobile-${item.label.toLowerCase()}`}>
                       {item.label}
-                    </button>
+                    </Link>
                   ))}
-                  <Button
-                    onClick={() => scrollToSection("reservations")}
-                    className="w-full"
-                    data-testid="button-mobile-reserve"
-                  >
-                    Reserve Table
-                  </Button>
+                  <Link href="/reservations">
+                    <Button className="w-full" data-testid="button-mobile-reserve" onClick={() => setIsOpen(false)}>
+                      Reserve Table
+                    </Button>
+                  </Link>
                 </div>
               </SheetContent>
             </Sheet>

@@ -1,15 +1,9 @@
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroImage from "@assets/generated_images/Elegant_dessert_crepe_plating_aa7d0cbd.png";
 
 export function HeroSection() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       id="hero"
@@ -45,23 +39,25 @@ export function HeroSection() {
           and the finest ingredients.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            size="lg"
-            onClick={() => scrollToSection("menu")}
-            className="text-base px-8 py-6"
-            data-testid="button-view-menu"
-          >
-            View Menu
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => scrollToSection("reservations")}
-            className="text-base px-8 py-6 backdrop-blur-md bg-white/10 border-white/30 text-white hover:bg-white/20"
-            data-testid="button-reserve-table"
-          >
-            Reserve Table
-          </Button>
+          <Link href="/menu">
+            <Button
+              size="lg"
+              className="text-base px-8 py-6"
+              data-testid="button-view-menu"
+            >
+              View Menu
+            </Button>
+          </Link>
+          <Link href="/reservations">
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-base px-8 py-6 backdrop-blur-md bg-white/10 border-white/30 text-white hover:bg-white/20"
+              data-testid="button-reserve-table"
+            >
+              Reserve Table
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
