@@ -3,32 +3,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChefHat, Heart, Sparkles } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useLanguage } from "@/contexts/language-context";
 import kitchenImage from "@assets/generated_images/Creperie_kitchen_interior_scene_f29ea8c4.png";
 
 export default function AboutPage() {
-  const { t, dir } = useLanguage();
-  
   const features = [
     {
       icon: ChefHat,
-      title: t("about.feature1Title"),
-      description: t("about.feature1Desc"),
+      title: "Traditional Recipes",
+      description:
+        "Authentic Algerian techniques passed down through generations, ensuring every crêpe is perfect.",
     },
     {
       icon: Heart,
-      title: t("about.feature2Title"),
-      description: t("about.feature2Desc"),
+      title: "Fresh Ingredients",
+      description:
+        "We source the finest local and imported ingredients to create unforgettable flavors.",
     },
     {
       icon: Sparkles,
-      title: t("about.feature3Title"),
-      description: t("about.feature3Desc"),
+      title: "Made to Order",
+      description:
+        "Each crêpe is prepared fresh when you order, guaranteeing quality and taste.",
     },
   ];
 
   return (
-    <div className="min-h-screen" dir={dir}>
+    <div className="min-h-screen">
       <Navigation />
       <main className="py-20 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
@@ -44,13 +44,16 @@ export default function AboutPage() {
 
             <div className="order-1 lg:order-2">
               <Badge variant="secondary" className="mb-4" data-testid="badge-about">
-                {t("about.badge")}
+                Our Story
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-                {t("about.heading")}
+                Bringing Algeria to Your Table
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                {t("about.description")}
+                Since opening our doors, Crêperie Kinder 5 has been dedicated to
+                bringing the authentic taste of Algeria to our community. Our passion
+                for traditional Algerian cuisine drives us to create exceptional crêpes
+                that transport you to the streets of Algiers with every bite.
               </p>
 
               <div className="space-y-6">

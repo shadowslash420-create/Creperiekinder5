@@ -3,55 +3,53 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useLanguage } from "@/contexts/language-context";
 
 export default function ContactPage() {
-  const { t, dir } = useLanguage();
-  
   const hours = [
-    { day: t("contact.mondayThursday"), time: "11:00 AM - 9:00 PM" },
-    { day: t("contact.fridaySaturday"), time: "11:00 AM - 10:00 PM" },
-    { day: t("contact.sunday"), time: "10:00 AM - 8:00 PM" },
+    { day: "Monday - Thursday", time: "11:00 AM - 9:00 PM" },
+    { day: "Friday - Saturday", time: "11:00 AM - 10:00 PM" },
+    { day: "Sunday", time: "10:00 AM - 8:00 PM" },
   ];
 
   const contactInfo = [
     {
       icon: MapPin,
-      title: t("contact.address"),
-      content: t("contact.addressValue"),
-      action: t("contact.getDirections"),
+      title: "Address",
+      content: "Crêperie Kinder 5, Algeria",
+      action: "Get Directions",
       link: "https://maps.app.goo.gl/q2Fzgr1BJifGT5A88",
     },
     {
       icon: Phone,
-      title: t("contact.phone"),
+      title: "Phone",
       content: "+213 XX XX XX XX",
-      action: t("contact.callUs"),
+      action: "Call Us",
       link: "tel:+213XXXXXXXX",
     },
     {
       icon: Mail,
-      title: t("contact.email"),
+      title: "Email",
       content: "contact@kinder5.dz",
-      action: t("contact.sendEmail"),
+      action: "Send Email",
       link: "mailto:contact@kinder5.dz",
     },
   ];
 
   return (
-    <div className="min-h-screen" dir={dir}>
+    <div className="min-h-screen">
       <Navigation />
       <main className="py-20 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4" data-testid="badge-contact">
-              {t("contact.badge")}
+              Visit Us
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              {t("contact.heading")}
+              Contact & Location
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {t("contact.subtitle")}
+              Come visit us and experience authentic Algerian crêpes in a warm,
+              welcoming atmosphere
             </p>
           </div>
 
@@ -60,7 +58,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-primary" />
-                  {t("contact.hours")}
+                  Opening Hours
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -81,7 +79,7 @@ export default function ContactPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>{t("contact.info")}</CardTitle>
+                <CardTitle>Contact Information</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">

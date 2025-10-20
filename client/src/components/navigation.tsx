@@ -13,7 +13,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
-import kinderEggImage from "@assets/chocolate-egg-kinder-surprise-20g-fr_1760973787001.png";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,26 +63,19 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
-            <div className="flex items-center gap-1">
-              <img 
-                src={kinderEggImage} 
-                alt="Kinder Egg" 
-                className="w-8 h-8"
-              />
-              <Link href="/cart">
-                <Button variant="ghost" size="icon" className="relative" data-testid="button-cart">
-                  <ShoppingCart className="h-5 w-5" />
-                  {totalItems > 0 && (
-                    <Badge 
-                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                      data-testid="badge-cart-count"
-                    >
-                      {totalItems}
-                    </Badge>
-                  )}
-                </Button>
-              </Link>
-            </div>
+            <Link href="/cart">
+              <Button variant="ghost" size="icon" className="relative" data-testid="button-cart">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <Badge 
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    data-testid="badge-cart-count"
+                  >
+                    {totalItems}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
             <LanguageSwitcher />
             <ThemeToggle />
             <Link href="/reservations">
@@ -95,11 +87,6 @@ export function Navigation() {
 
           {/* Mobile Navigation */}
           <div className="flex md:hidden items-center gap-2">
-            <img 
-              src={kinderEggImage} 
-              alt="Kinder Egg" 
-              className="w-7 h-7"
-            />
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative" data-testid="button-mobile-cart">
                 <ShoppingCart className="h-5 w-5" />

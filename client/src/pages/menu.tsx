@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useLanguage } from "@/contexts/language-context";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,6 @@ export default function MenuPage() {
 
   const { addItem } = useCart();
   const { toast } = useToast();
-  const { t, dir } = useLanguage();
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
 
   const isLoading = categoriesLoading || itemsLoading;
@@ -45,8 +43,8 @@ export default function MenuPage() {
     addItem(item);
     setSelectedItem(null);
     toast({
-      title: t("menu.addToCart"),
-      description: `${item.name}`,
+      title: "Added to cart",
+      description: `${item.name} has been added to your cart.`,
     });
   };
 
@@ -57,10 +55,10 @@ export default function MenuPage() {
   return (
     <>
       <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
-        <DialogContent className="max-w-2xl" dir={dir}>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>{selectedItem?.name}</DialogTitle>
-            <DialogDescription>{t("menu.productDetails")}</DialogDescription>
+            <DialogDescription>Product Details</DialogDescription>
           </DialogHeader>
           {selectedItem && (
             <div className="space-y-4">
@@ -76,10 +74,10 @@ export default function MenuPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-primary">
-                    {selectedItem.price} {t("common.dzd")}
+                    {selectedItem.price} DZD
                   </span>
                   {selectedItem.popular && (
-                    <Badge variant="secondary">{t("menu.popular")}</Badge>
+                    <Badge variant="secondary">Popular</Badge>
                   )}
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
@@ -92,27 +90,27 @@ export default function MenuPage() {
                 size="lg"
                 data-testid={`button-add-cart-dialog-${selectedItem.id}`}
               >
-                <ShoppingCart className={`w-4 h-4 ${dir === "rtl" ? "ml-2" : "mr-2"}`} />
-                {t("menu.addToCart")}
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add to Cart
               </Button>
             </div>
           )}
         </DialogContent>
       </Dialog>
 
-      <div className="min-h-screen flex flex-col" dir={dir}>
+      <div className="min-h-screen flex flex-col">
         <Navigation />
         <main className="flex-1 py-20 md:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div className="text-center mb-16">
               <Badge variant="secondary" className="mb-4" data-testid="badge-menu">
-                {t("menu.badge")}
+                Our Menu
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                {t("menu.title")}
+                Notre Menu
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                {t("menu.subtitle")}
+                Découvrez nos délicieuses crêpes, cheesecakes, donuts et boissons
               </p>
             </div>
 
@@ -167,7 +165,7 @@ export default function MenuPage() {
                                     {item.name}
                                     {item.popular && (
                                       <Badge variant="secondary" className="text-xs">
-                                        {t("menu.popular")}
+                                        Popular
                                       </Badge>
                                     )}
                                   </CardTitle>
@@ -179,7 +177,7 @@ export default function MenuPage() {
                                   className="text-xl font-bold text-primary whitespace-nowrap"
                                   data-testid={`price-${item.id}`}
                                 >
-                                  {item.price} {t("common.dzd")}
+                                  {item.price} DZD
                                 </span>
                               </div>
                             </CardHeader>
@@ -189,8 +187,8 @@ export default function MenuPage() {
                                 className="w-full"
                                 data-testid={`button-view-details-${item.id}`}
                               >
-                                <Info className={`w-4 h-4 ${dir === "rtl" ? "ml-2" : "mr-2"}`} />
-                                {t("menu.viewDetails")}
+                                <Info className="w-4 h-4 mr-2" />
+                                View Details
                               </Button>
                             </CardContent>
                           </Card>

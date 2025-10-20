@@ -6,28 +6,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/contexts/cart-context";
-import { useLanguage } from "@/contexts/language-context";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
-  const { t, dir } = useLanguage();
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col" dir={dir}>
+      <div className="min-h-screen flex flex-col">
         <Navigation />
         <main className="flex-1 py-20 md:py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div className="text-center">
               <ShoppingBag className="w-24 h-24 mx-auto text-muted-foreground mb-6" />
-              <h1 className="text-4xl font-bold mb-4">{t("cart.empty")}</h1>
+              <h1 className="text-4xl font-bold mb-4">Your Cart is Empty</h1>
               <p className="text-lg text-muted-foreground mb-8">
-                {t("cart.emptyMessage")}
+                Start adding some delicious items from our menu!
               </p>
               <Link href="/menu">
                 <Button size="lg" data-testid="button-browse-menu">
-                  {t("cart.browseMenu")}
+                  Browse Menu
                 </Button>
               </Link>
             </div>
@@ -39,15 +37,15 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" dir={dir}>
+    <div className="min-h-screen flex flex-col">
       <Navigation />
       <main className="flex-1 py-20 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-2">{t("cart.title")}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">Shopping Cart</h1>
               <p className="text-lg text-muted-foreground">
-                {items.length} {items.length === 1 ? t("cart.item") : t("cart.items")} {t("cart.inYourCart")}
+                {items.length} {items.length === 1 ? 'item' : 'items'} in your cart
               </p>
             </div>
             <Button 
@@ -55,7 +53,7 @@ export default function CartPage() {
               onClick={clearCart}
               data-testid="button-clear-cart"
             >
-              {t("cart.clearCart")}
+              Clear Cart
             </Button>
           </div>
 
@@ -126,7 +124,7 @@ export default function CartPage() {
                             className="font-bold text-lg text-primary"
                             data-testid={`cart-item-price-${item.id}`}
                           >
-                            {(parseFloat(item.price) * item.quantity).toFixed(2)} {t("common.dzd")}
+                            {(parseFloat(item.price) * item.quantity).toFixed(2)} DZD
                           </span>
                         </div>
                       </div>
@@ -139,7 +137,7 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <Card className="sticky top-24">
                 <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-6">{t("cart.orderSummary")}</h2>
+                  <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
                   
                   <div className="space-y-3 mb-4">
                     {items.map((item) => (
@@ -148,7 +146,7 @@ export default function CartPage() {
                           {item.name} × {item.quantity}
                         </span>
                         <span className="font-medium">
-                          {(parseFloat(item.price) * item.quantity).toFixed(2)} {t("common.dzd")}
+                          {(parseFloat(item.price) * item.quantity).toFixed(2)} DZD
                         </span>
                       </div>
                     ))}
@@ -157,12 +155,12 @@ export default function CartPage() {
                   <Separator className="my-4" />
 
                   <div className="flex justify-between items-center mb-6">
-                    <span className="text-lg font-semibold">{t("cart.total")}</span>
+                    <span className="text-lg font-semibold">Total</span>
                     <span 
                       className="text-2xl font-bold text-primary"
                       data-testid="text-total-price"
                     >
-                      {totalPrice.toFixed(2)} {t("common.dzd")}
+                      {totalPrice.toFixed(2)} DZD
                     </span>
                   </div>
 
@@ -172,8 +170,8 @@ export default function CartPage() {
                       size="lg"
                       data-testid="button-checkout"
                     >
-                      {t("cart.checkout")}
-                      <ArrowRight className={`w-4 h-4 ${dir === "rtl" ? "mr-2" : "ml-2"}`} />
+                      Proceed to Checkout
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
 
@@ -183,7 +181,7 @@ export default function CartPage() {
                       className="w-full mt-3"
                       data-testid="button-continue-shopping"
                     >
-                      {t("cart.continueShopping")}
+                      Continue Shopping
                     </Button>
                   </Link>
                 </CardContent>

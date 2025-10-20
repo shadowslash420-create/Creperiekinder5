@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useLanguage } from "@/contexts/language-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -29,7 +28,6 @@ export default function CheckoutPage() {
   const [, setLocation] = useLocation();
   const { items, totalPrice, clearCart } = useCart();
   const { toast } = useToast();
-  const { t, dir } = useLanguage();
   const [orderSuccess, setOrderSuccess] = useState(false);
 
   const form = useForm<CustomerOrder>({
@@ -73,8 +71,8 @@ export default function CheckoutPage() {
       setOrderSuccess(true);
       clearCart();
       toast({
-        title: t("checkout.success"),
-        description: t("checkout.successDesc"),
+        title: "Order Placed Successfully!",
+        description: "Thank you for your order. We will contact you shortly to confirm.",
       });
       setTimeout(() => {
         setLocation("/");
@@ -82,8 +80,8 @@ export default function CheckoutPage() {
     },
     onError: (error: any) => {
       toast({
-        title: t("checkout.failed"),
-        description: error.message || t("checkout.failedDesc"),
+        title: "Order Failed",
+        description: error.message || "Please try again or contact us directly.",
         variant: "destructive",
       });
     },
@@ -100,17 +98,17 @@ export default function CheckoutPage() {
 
   if (orderSuccess) {
     return (
-      <div className="min-h-screen flex flex-col" dir={dir}>
+      <div className="min-h-screen flex flex-col">
         <Navigation />
         <main className="flex-1 py-20 md:py-24 lg:py-32">
           <div className="max-w-2xl mx-auto px-4 md:px-6 lg:px-8 text-center">
             <CheckCircle2 className="w-24 h-24 mx-auto text-green-500 mb-6" />
-            <h1 className="text-4xl font-bold mb-4">{t("checkout.orderConfirmed")}</h1>
+            <h1 className="text-4xl font-bold mb-4">Order Confirmed!</h1>
             <p className="text-lg text-muted-foreground mb-4">
-              {t("checkout.thankYou")}
+              Thank you for your order. We've received your request and will contact you shortly.
             </p>
             <p className="text-sm text-muted-foreground">
-              {t("checkout.redirecting")}
+              Redirecting to home page...
             </p>
           </div>
         </main>
@@ -120,19 +118,19 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" dir={dir}>
+    <div className="min-h-screen flex flex-col">
       <Navigation />
       <main className="flex-1 py-20 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-8">{t("checkout.title")}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-8">Checkout</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>{t("checkout.customerInfo")}</CardTitle>
+                  <CardTitle>Customer Information</CardTitle>
                   <CardDescription>
-                    {t("checkout.customerInfoDesc")}
+                    Please provide your contact details so we can process your order
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -144,7 +142,7 @@ export default function CheckoutPage() {
                           name="firstName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>{t("checkout.firstName")}</FormLabel>
+                              <FormLabel>First Name</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="John" 
@@ -162,7 +160,7 @@ export default function CheckoutPage() {
                           name="lastName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>{t("checkout.lastName")}</FormLabel>
+                              <FormLabel>Last Name</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Doe" 
@@ -181,7 +179,7 @@ export default function CheckoutPage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t("checkout.email")}</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
                               <Input 
                                 type="email" 
@@ -200,7 +198,7 @@ export default function CheckoutPage() {
                         name="phone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t("checkout.phone")}</FormLabel>
+                            <FormLabel>Phone Number</FormLabel>
                             <FormControl>
                               <Input 
                                 type="tel" 
@@ -219,11 +217,11 @@ export default function CheckoutPage() {
                         name="preferredTime"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t("checkout.preferredTime")}</FormLabel>
+                            <FormLabel>Preferred Pickup Time (Optional)</FormLabel>
                             <FormControl>
                               <Input 
                                 type="text" 
-                                placeholder={t("checkout.preferredTimePlaceholder")}
+                                placeholder="e.g., Today at 3 PM, Tomorrow morning" 
                                 {...field} 
                                 data-testid="input-preferred-time"
                               />
@@ -238,10 +236,10 @@ export default function CheckoutPage() {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>{t("checkout.message")}</FormLabel>
+                            <FormLabel>Special Instructions (Optional)</FormLabel>
                             <FormControl>
                               <Textarea 
-                                placeholder={t("checkout.messagePlaceholder")}
+                                placeholder="Any special requests or dietary requirements?" 
                                 className="min-h-24"
                                 {...field} 
                                 data-testid="input-message"
@@ -261,11 +259,11 @@ export default function CheckoutPage() {
                       >
                         {createOrder.isPending ? (
                           <>
-                            <Loader2 className={`w-4 h-4 ${dir === "rtl" ? "ml-2" : "mr-2"} animate-spin`} />
-                            {t("checkout.placingOrder")}
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Placing Order...
                           </>
                         ) : (
-                          `${t("checkout.placeOrder")} - ${totalPrice.toFixed(2)} ${t("common.dzd")}`
+                          `Place Order - ${totalPrice.toFixed(2)} DZD`
                         )}
                       </Button>
                     </form>
@@ -277,7 +275,7 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <Card className="sticky top-24">
                 <CardHeader>
-                  <CardTitle>{t("cart.orderSummary")}</CardTitle>
+                  <CardTitle>Order Summary</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 mb-4">
@@ -287,7 +285,7 @@ export default function CheckoutPage() {
                           {item.name} × {item.quantity}
                         </span>
                         <span className="font-medium">
-                          {(parseFloat(item.price) * item.quantity).toFixed(2)} {t("common.dzd")}
+                          {(parseFloat(item.price) * item.quantity).toFixed(2)} DZD
                         </span>
                       </div>
                     ))}
@@ -296,9 +294,9 @@ export default function CheckoutPage() {
                   <Separator className="my-4" />
 
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold">{t("cart.total")}</span>
+                    <span className="text-lg font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary" data-testid="text-checkout-total">
-                      {totalPrice.toFixed(2)} {t("common.dzd")}
+                      {totalPrice.toFixed(2)} DZD
                     </span>
                   </div>
                 </CardContent>
