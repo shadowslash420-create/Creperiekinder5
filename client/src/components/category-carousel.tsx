@@ -14,8 +14,8 @@ import donutImg from "@assets/generated_images/Colorful_glazed_donuts_99c8d4cb.p
 import pancakeImg from "@assets/generated_images/Mini_pancakes_stack_a442a392.png";
 import fondantImg from "@assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png";
 import tiramisuImg from "@assets/Screenshot_20251020_105029_Instagram_1760953849027.jpg";
-import { useCart } from "@/contexts/cart-context";
-import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/hooks/use-cart";
+import { useToast } from "@/components/ui/use-toast";
 
 const categoryImages: Record<string, string> = {
   "crepe": crepeImg,
