@@ -15,7 +15,7 @@ import pancakeImg from "@assets/generated_images/Mini_pancakes_stack_a442a392.pn
 import fondantImg from "@assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png";
 import tiramisuImg from "@assets/Screenshot_20251020_105029_Instagram_1760953849027.jpg";
 import { useCart } from "@/hooks/use-cart";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const categoryImages: Record<string, string> = {
   "crepe": crepeImg,
