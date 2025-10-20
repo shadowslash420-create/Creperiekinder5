@@ -35,7 +35,7 @@ export function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-32 md:py-40 text-center">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white overflow-hidden" style={{
+          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white overflow-hidden rotate-smooth" style={{
             boxShadow: '0 0 30px rgba(220, 38, 38, 0.4), 0 0 60px rgba(220, 38, 38, 0.2), 0 10px 40px rgba(0, 0, 0, 0.3)'
           }}>
             <img

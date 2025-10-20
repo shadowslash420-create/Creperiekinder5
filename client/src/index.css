@@ -601,6 +601,19 @@
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
+@keyframes rotate-smooth {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-smooth {
+  animation: rotate-smooth 20s linear infinite;
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 20px rgba(220, 38, 38, 0.3), 0 0 40px rgba(220, 38, 38, 0.15);
