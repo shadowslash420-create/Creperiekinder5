@@ -4,7 +4,9 @@ import { Menu, X, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { useCart } from "@/contexts/cart-context";
+import { useLanguage } from "@/contexts/language-context";
 import {
   Sheet,
   SheetContent,
@@ -16,6 +18,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
+  const { t, dir } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,14 +30,14 @@ export function Navigation() {
   }, []);
 
   const navItems = [
-    { label: "Menu", path: "/menu" },
-    { label: "About", path: "/about" },
-    { label: "Reservations", path: "/reservations" },
-    { label: "Contact", path: "/contact" },
+    { label: t("nav.menu"), path: "/menu" },
+    { label: t("nav.about"), path: "/about" },
+    { label: t("nav.reservations"), path: "/reservations" },
+    { label: t("nav.contact"), path: "/contact" },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
+    <nav dir={dir} className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
       scrolled 
         ? 'bg-background/95 shadow-lg' 
         : 'bg-background/80'
@@ -73,10 +76,11 @@ export function Navigation() {
                 )}
               </Button>
             </Link>
+            <LanguageSwitcher />
             <ThemeToggle />
             <Link href="/reservations">
               <Button data-testid="button-reserve-cta">
-                Reserve Table
+                {t("nav.reserve")}
               </Button>
             </Link>
           </div>
@@ -96,6 +100,7 @@ export function Navigation() {
                 )}
               </Button>
             </Link>
+            <LanguageSwitcher />
             <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -112,7 +117,7 @@ export function Navigation() {
                   ))}
                   <Link href="/reservations">
                     <Button className="w-full" data-testid="button-mobile-reserve" onClick={() => setIsOpen(false)}>
-                      Reserve Table
+                      {t("nav.reserve")}
                     </Button>
                   </Link>
                 </div>

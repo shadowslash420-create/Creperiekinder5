@@ -1,11 +1,14 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/language-context";
 import heroImage from "@assets/generated_images/Elegant_dessert_crepe_plating_aa7d0cbd.png";
 import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
 import kinderCrepe from "@assets/generated_images/Kinder_crepe_product_photo_7c9a3fe6.png";
 
 export function HeroSection() {
+  const { t, dir } = useLanguage();
+
   return (
     <section
       id="hero"
@@ -67,15 +70,13 @@ export function HeroSection() {
             <span className="marquee-item">Imagine it, We Make it</span>
           </div>
         </div>
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
-          Welcome to
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+          {t("hero.welcome")}
           <br />
-          Crêperie Kinder 5
+          {t("hero.title")}
         </h1>
         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Experience the authentic taste of Algeria with our handcrafted crêpes.
-          From sweet to savory, each creation is made with traditional recipes
-          and the finest ingredients.
+          {t("hero.description")}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/menu">
@@ -84,7 +85,7 @@ export function HeroSection() {
               className="text-base px-8 py-6"
               data-testid="button-view-menu"
             >
-              View Menu
+              {t("hero.viewMenu")}
             </Button>
           </Link>
           <Link href="/reservations">
@@ -94,7 +95,7 @@ export function HeroSection() {
               className="text-base px-8 py-6 backdrop-blur-md bg-white/10 border-white/30 text-white hover:bg-white/20"
               data-testid="button-reserve-table"
             >
-              Reserve Table
+              {t("hero.reserveTable")}
             </Button>
           </Link>
         </div>

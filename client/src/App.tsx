@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/contexts/cart-context";
+import { LanguageProvider } from "@/contexts/language-context";
 
 const Home = lazy(() => import("@/pages/home"));
 const MenuPage = lazy(() => import("@/pages/menu"));
@@ -45,12 +46,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="creperie-theme">
-        <CartProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </CartProvider>
+        <LanguageProvider>
+          <CartProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+            </TooltipProvider>
+          </CartProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

@@ -422,6 +422,14 @@
     font-family: var(--font-serif);
     letter-spacing: -0.02em;
   }
+
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="rtl"] .flex-row {
+    flex-direction: row-reverse;
+  }
 }
 
 .animated-crepe-bg {
