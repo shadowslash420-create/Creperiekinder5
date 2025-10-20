@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, Plus, Zap } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ShoppingCart, Plus, Info } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useToast } from "@/hooks/use-toast";
 import type { MenuItem, Category } from "@shared/schema";
@@ -18,9 +26,9 @@ export function MenuSection() {
     queryKey: ["/api/menu-items"],
   });
 
-  const { addItem, clearCart } = useCart();
+  const { addItem } = useCart();
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
 
   const isLoading = categoriesLoading || itemsLoading;
 
@@ -30,21 +38,65 @@ export function MenuSection() {
 
   const handleAddToCart = (item: MenuItem) => {
     addItem(item);
+    setSelectedItem(null);
     toast({
       title: "Added to cart",
       description: `${item.name} has been added to your cart.`,
     });
   };
 
-  const handleBuyNow = (item: MenuItem) => {
-    clearCart();
-    addItem(item);
-    setLocation("/checkout");
+  const handleViewDetails = (item: MenuItem) => {
+    setSelectedItem(item);
   };
 
   return (
-    <section id="menu" className="py-20 md:py-24 lg:py-32 bg-card">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <>
+      <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{selectedItem?.name}</DialogTitle>
+            <DialogDescription>Product Details</DialogDescription>
+          </DialogHeader>
+          {selectedItem && (
+            <div className="space-y-4">
+              {selectedItem.imageUrl && (
+                <div className="aspect-video overflow-hidden rounded-lg bg-muted">
+                  <img
+                    src={selectedItem.imageUrl}
+                    alt={selectedItem.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl font-bold text-primary">
+                    {selectedItem.price} DZD
+                  </span>
+                  {selectedItem.popular && (
+                    <Badge variant="secondary">Popular</Badge>
+                  )}
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  {selectedItem.description}
+                </p>
+              </div>
+              <Button 
+                onClick={() => handleAddToCart(selectedItem)}
+                className="w-full"
+                size="lg"
+                data-testid={`button-add-cart-dialog-${selectedItem.id}`}
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add to Cart
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+      
+      <section id="menu" className="py-20 md:py-24 lg:py-32 bg-card">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="text-center mb-16">
           <Badge variant="secondary" className="mb-4" data-testid="badge-menu">
             Our Menu
@@ -125,25 +177,14 @@ export function MenuSection() {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <div className="flex gap-2">
-                            <Button 
-                              onClick={() => handleBuyNow(item)}
-                              className="flex-1"
-                              data-testid={`button-buy-now-${item.id}`}
-                            >
-                              <Zap className="w-4 h-4 mr-2" />
-                              Buy Now
-                            </Button>
-                            <Button 
-                              onClick={() => handleAddToCart(item)}
-                              variant="outline"
-                              className="flex-1"
-                              data-testid={`button-add-cart-${item.id}`}
-                            >
-                              <Plus className="w-4 h-4 mr-2" />
-                              Add to Cart
-                            </Button>
-                          </div>
+                          <Button 
+                            onClick={() => handleViewDetails(item)}
+                            className="w-full"
+                            data-testid={`button-view-details-${item.id}`}
+                          >
+                            <Info className="w-4 h-4 mr-2" />
+                            View Details
+                          </Button>
                         </CardContent>
                       </Card>
                     ))}
@@ -155,5 +196,6 @@ export function MenuSection() {
         )}
       </div>
     </section>
+    </>
   );
 }
