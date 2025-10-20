@@ -18,13 +18,19 @@ export function HeroSection() {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+        {/* Animated Crepe Background */}
+        <div className="animated-crepe-bg">
+          <div className="crepe-circle crepe-circle-1"></div>
+          <div className="crepe-circle crepe-circle-2"></div>
+          <div className="crepe-circle crepe-circle-3"></div>
+        </div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-32 md:py-40 text-center">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white shadow-2xl overflow-hidden">
+          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white shadow-2xl overflow-hidden golden-glow">
             <img
               src={logoImage}
               alt="Crêperie Kinder 5 Logo"

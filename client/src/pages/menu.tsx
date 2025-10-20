@@ -2,9 +2,13 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { Plus } from "lucide-react";
+import { useCart } from "@/contexts/cart-context";
+import { useToast } from "@/hooks/use-toast";
 import type { MenuItem, Category } from "@shared/schema";
 
 export default function MenuPage() {
@@ -16,10 +20,21 @@ export default function MenuPage() {
     queryKey: ["/api/menu-items"],
   });
 
+  const { addItem } = useCart();
+  const { toast } = useToast();
+
   const isLoading = categoriesLoading || itemsLoading;
 
   const getItemsByCategory = (categoryId: string) => {
     return menuItems?.filter((item) => item.categoryId === categoryId && item.available) || [];
+  };
+
+  const handleAddToCart = (item: MenuItem) => {
+    addItem(item);
+    toast({
+      title: "Added to cart",
+      description: `${item.name} has been added to your cart.`,
+    });
   };
 
   useEffect(() => {
@@ -114,7 +129,7 @@ export default function MenuPage() {
                                 {item.description}
                               </CardDescription>
                             </div>
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between gap-2 mb-3">
                               <span
                                 className="text-lg font-bold text-primary"
                                 data-testid={`price-${item.id}`}
@@ -122,6 +137,15 @@ export default function MenuPage() {
                                 {item.price} DA
                               </span>
                             </div>
+                            <Button 
+                              onClick={() => handleAddToCart(item)}
+                              size="sm"
+                              className="w-full"
+                              data-testid={`button-add-cart-${item.id}`}
+                            >
+                              <Plus className="w-3 h-3 mr-1" />
+                              Add
+                            </Button>
                           </CardContent>
                         </Card>
                       ))}
