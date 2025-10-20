@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,17 @@ import logoImage from "@assets/Screenshot_20251020_093011_Instagram_176094902320
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { label: "Menu", path: "/menu" },
@@ -24,15 +34,23 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md bg-background/80">
+    <nav className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
+      scrolled 
+        ? 'bg-background/95 shadow-lg' 
+        : 'bg-background/80'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className={`flex items-center justify-between transition-all duration-300 ${
+          scrolled ? 'h-14 md:h-16' : 'h-16 md:h-20'
+        }`}>
           <Link href="/" className="flex items-center gap-2 text-xl md:text-2xl font-bold tracking-tight hover-elevate active-elevate-2 rounded-lg px-2 py-1 -ml-2" data-testid="link-home">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center">
+            <div className={`rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
+              scrolled ? 'w-8 h-8 md:w-10 md:h-10' : 'w-10 h-10 md:w-12 md:h-12'
+            }`}>
               <img src={logoImage} alt="Kinder 5" className="w-full h-full object-cover scale-[1.8]" />
             </div>
-            <span className="hidden sm:inline">Crêperie Kinder 5</span>
-            <span className="sm:hidden">Kinder 5</span>
+            <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie Kinder 5</span>
+            <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Kinder 5</span>
           </Link>
 
           {/* Desktop Navigation */}
