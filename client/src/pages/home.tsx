@@ -1,6 +1,6 @@
 import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
-import { MenuCategoriesSection } from "@/components/menu-categories-section";
+import { CategoryCarousel } from "@/components/category-carousel";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
-        <MenuCategoriesSection />
+        <CategoryCarousel />
       </main>
       <Footer />
     </div>
