@@ -12,8 +12,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { RotatingModel } from "@/components/rotating-model";
-import kinderEggModel from "@assets/kinder_surprise_egg_1760976354678.glb";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,16 +46,12 @@ export function Navigation() {
           scrolled ? 'h-14 md:h-16' : 'h-16 md:h-20'
         }`}>
           <Link href="/" className="flex items-center gap-2 text-xl md:text-2xl font-bold tracking-tight hover-elevate active-elevate-2 rounded-lg px-2 py-1 -ml-2" data-testid="link-home">
-            <div className={`rounded-full overflow-hidden shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
+            <div className={`rounded-full overflow-hidden shadow-md flex items-center justify-center logo-transition transition-all duration-300 bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 animate-pulse ${
               scrolled ? 'w-12 h-12 md:w-14 md:h-14' : 'w-16 h-16 md:w-20 md:h-20'
             }`}>
-              <RotatingModel
-                modelPath={kinderEggModel}
-                className="w-full h-full"
-                scale={2.5}
-                rotationSpeed={0.02}
-                cameraPosition={[0, 0, 3]}
-              />
+              <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <span className="text-white font-bold text-xs md:text-sm">K5</span>
+              </div>
             </div>
             <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie Kinder 5</span>
             <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Kinder 5</span>

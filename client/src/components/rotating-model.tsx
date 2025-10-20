@@ -1,6 +1,6 @@
 import { useRef, Suspense, Component, ErrorInfo, ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Environment } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 interface ModelProps {
@@ -77,14 +77,15 @@ export function RotatingModel({
         <Canvas
           camera={{ position: cameraPosition, fov: 45 }}
           style={{ width: "100%", height: "100%" }}
-          gl={{ preserveDrawingBuffer: true }}
+          onCreated={({ gl }) => {
+            gl.setClearColor('#000000', 0);
+          }}
         >
           <Suspense fallback={null}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-            <pointLight position={[-10, -10, -10]} />
+            <ambientLight intensity={0.8} />
+            <directionalLight position={[5, 5, 5]} intensity={0.6} />
+            <directionalLight position={[-5, -5, -5]} intensity={0.3} />
             <Model url={modelPath} scale={scale} rotationSpeed={rotationSpeed} />
-            <Environment preset="sunset" />
           </Suspense>
         </Canvas>
       </ErrorBoundary>
