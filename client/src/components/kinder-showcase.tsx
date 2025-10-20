@@ -1,5 +1,5 @@
-import { ModelViewer } from "@/components/model-viewer";
 import { useLanguage } from "@/contexts/language-context";
+import { Card } from "@/components/ui/card";
 
 export function KinderShowcase() {
   const { t, dir } = useLanguage();
@@ -12,7 +12,7 @@ export function KinderShowcase() {
             {t("kinder.title") || "Kinder Surprise Experience"}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t("kinder.description") || "Discover our signature Kinder creations. Interact with the 3D model below!"}
+            {t("kinder.description") || "Discover our signature Kinder creations with premium ingredients!"}
           </p>
         </div>
 
@@ -54,19 +54,22 @@ export function KinderShowcase() {
             </div>
           </div>
 
-          <div className="order-1 md:order-2" data-testid="container-3d-model">
-            <ModelViewer 
-              modelPath="/models/kinder-egg.glb"
-              scale={2.5}
-              autoRotate={true}
-              className="shadow-2xl"
-            />
+          <div className="order-1 md:order-2" data-testid="container-product-image">
+            <Card className="relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 shadow-2xl">
+              <div className="w-full h-full min-h-[300px] md:min-h-[400px] flex items-center justify-center p-8">
+                <img 
+                  src="/attached_assets/generated_images/Kinder_crepe_product_photo_7c9a3fe6.png" 
+                  alt="Kinder Crepe - Our signature chocolate crepe topped with Kinder treats"
+                  className="w-full h-full object-contain rounded-lg"
+                />
+              </div>
+            </Card>
           </div>
         </div>
 
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
-            💡 {t("kinder.tip") || "Tip: Drag the model to rotate, scroll to zoom"}
+            💡 {t("kinder.tip") || "Visit us today to experience this delightful treat!"}
           </p>
         </div>
       </div>
