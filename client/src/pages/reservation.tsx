@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/language-context";
 import {
   Form,
   FormControl,
@@ -31,6 +32,7 @@ import { Footer } from "@/components/footer";
 
 export default function ReservationPage() {
   const { toast } = useToast();
+  const { t, dir } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const form = useForm<InsertReservation>({
@@ -55,14 +57,14 @@ export default function ReservationPage() {
       setIsSubmitted(true);
       form.reset();
       toast({
-        title: "Reservation Confirmed!",
-        description: "We look forward to serving you. A confirmation email has been sent.",
+        title: t("reservations.confirmed"),
+        description: t("reservations.confirmedDesc"),
       });
     },
     onError: () => {
       toast({
-        title: "Reservation Failed",
-        description: "Please try again or call us directly.",
+        title: t("reservations.failed"),
+        description: t("reservations.failedDesc"),
         variant: "destructive",
       });
     },
@@ -79,19 +81,19 @@ export default function ReservationPage() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" dir={dir}>
       <Navigation />
       <main className="py-20 md:py-24 lg:py-32">
         <div className="max-w-3xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center mb-12">
             <Badge variant="secondary" className="mb-4" data-testid="badge-reservations">
-              Book a Table
+              {t("reservations.badge")}
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Make a Reservation
+              {t("reservations.title")}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Reserve your table and get ready for an unforgettable dining experience
+              {t("reservations.subtitle")}
             </p>
           </div>
 
@@ -99,10 +101,10 @@ export default function ReservationPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CalendarDays className="w-5 h-5 text-primary" />
-                Reservation Details
+                {t("reservations.details")}
               </CardTitle>
               <CardDescription>
-                Fill out the form below and we'll confirm your reservation shortly
+                {t("reservations.detailsDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -114,7 +116,7 @@ export default function ReservationPage() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>{t("reservations.fullName")}</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="John Doe"
@@ -132,7 +134,7 @@ export default function ReservationPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("checkout.email")}</FormLabel>
                           <FormControl>
                             <Input
                               type="email"
@@ -153,7 +155,7 @@ export default function ReservationPage() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
+                          <FormLabel>{t("checkout.phone")}</FormLabel>
                           <FormControl>
                             <Input
                               type="tel"
@@ -172,7 +174,7 @@ export default function ReservationPage() {
                       name="partySize"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Party Size</FormLabel>
+                          <FormLabel>{t("reservations.partySize")}</FormLabel>
                           <FormControl>
                             <Input
                               type="number"
@@ -195,7 +197,7 @@ export default function ReservationPage() {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>{t("reservations.date")}</FormLabel>
                           <FormControl>
                             <Input
                               type="date"
@@ -214,11 +216,11 @@ export default function ReservationPage() {
                       name="time"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Time</FormLabel>
+                          <FormLabel>{t("reservations.time")}</FormLabel>
                           <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger data-testid="select-time">
-                                <SelectValue placeholder="Select time" />
+                                <SelectValue placeholder={t("reservations.selectTime")} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -240,10 +242,10 @@ export default function ReservationPage() {
                     name="specialRequests"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Special Requests (Optional)</FormLabel>
+                        <FormLabel>{t("reservations.specialRequests")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Any dietary restrictions or special occasions?"
+                            placeholder={t("reservations.specialRequestsPlaceholder")}
                             className="resize-none"
                             rows={3}
                             {...field}
@@ -261,7 +263,7 @@ export default function ReservationPage() {
                     disabled={createReservation.isPending}
                     data-testid="button-submit-reservation"
                   >
-                    {createReservation.isPending ? "Reserving..." : "Reserve Table"}
+                    {createReservation.isPending ? t("reservations.reserving") : t("reservations.reserveTable")}
                   </Button>
                 </form>
               </Form>
