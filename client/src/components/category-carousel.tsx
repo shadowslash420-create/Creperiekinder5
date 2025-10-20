@@ -147,8 +147,8 @@ export function CategoryCarousel() {
                           </Badge>
                         </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                          {items.slice(0, 8).map((item) => (
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {items.slice(0, 4).map((item) => (
                             <Card
                               key={item.id}
                               className="hover-elevate transition-shadow overflow-hidden"
