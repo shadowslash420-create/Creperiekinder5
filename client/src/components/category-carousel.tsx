@@ -94,8 +94,10 @@ export function CategoryCarousel() {
   };
 
   return (
-    <section className="py-20 md:py-24 lg:py-32 bg-card">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <section className="relative py-20 md:py-24 lg:py-32 bg-card overflow-hidden">
+      <div className="menu-watermark" style={{ top: '10%', left: '5%', opacity: 0.03 }}>MENU</div>
+      <div className="menu-watermark" style={{ bottom: '10%', right: '5%', opacity: 0.03 }}>MENU</div>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4" data-testid="badge-categories">
             Our Categories
@@ -179,7 +181,7 @@ export function CategoryCarousel() {
                             >
                               <div className="relative aspect-[4/3] overflow-hidden bg-muted cursor-pointer" onClick={() => handleBuyNow(item)}>
                                 <img
-                                  src={item.imageUrl}
+                                  src={item.imageUrl || ''}
                                   alt={item.name}
                                   className="w-full h-full object-cover transition-transform group-hover:scale-105"
                                   data-testid={`img-item-${item.id}`}
