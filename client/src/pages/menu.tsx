@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,18 @@ export default function MenuPage() {
   const getItemsByCategory = (categoryId: string) => {
     return menuItems?.filter((item) => item.categoryId === categoryId && item.available) || [];
   };
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [isLoading]);
 
   return (
     <div className="min-h-screen">
@@ -58,7 +71,7 @@ export default function MenuPage() {
                 if (items.length === 0) return null;
 
                 return (
-                  <div key={category.id} data-testid={`category-${category.id}`}>
+                  <div key={category.id} id={category.id} data-testid={`category-${category.id}`}>
                     <div className="flex items-center gap-3 mb-2">
                       <h2 className="text-3xl font-semibold">{category.name}</h2>
                       <Badge variant="outline" className="text-sm" data-testid={`category-counter-${category.id}`}>

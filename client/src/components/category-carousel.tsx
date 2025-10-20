@@ -123,7 +123,7 @@ export function CategoryCarousel() {
                         </div>
 
                         <Card className="overflow-hidden hover-elevate transition-all group cursor-pointer max-w-4xl mx-auto mb-8">
-                          <Link href="/menu">
+                          <Link href={`/menu#${category.id}`}>
                             <div className="relative aspect-video overflow-hidden bg-muted">
                               <img
                                 src={categoryImage}
