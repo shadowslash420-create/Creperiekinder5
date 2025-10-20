@@ -1,17 +1,19 @@
-import { useEffect } from "react";
+
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { Plus } from "lucide-react";
+import { Plus, Zap } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useToast } from "@/hooks/use-toast";
 import type { MenuItem, Category } from "@shared/schema";
 
 export default function MenuPage() {
+  const [, setLocation] = useLocation();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
@@ -20,7 +22,7 @@ export default function MenuPage() {
     queryKey: ["/api/menu-items"],
   });
 
-  const { addItem } = useCart();
+  const { addItem, clearCart } = useCart();
   const { toast } = useToast();
 
   const isLoading = categoriesLoading || itemsLoading;
@@ -37,22 +39,16 @@ export default function MenuPage() {
     });
   };
 
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
-    }
-  }, [isLoading]);
+  const handleBuyNow = (item: MenuItem) => {
+    clearCart();
+    addItem(item);
+    setLocation("/checkout");
+  };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navigation />
-      <main className="py-20 md:py-24 lg:py-32">
+      <main className="flex-1 py-20 md:py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4" data-testid="badge-menu">
@@ -71,7 +67,7 @@ export default function MenuPage() {
               {[1, 2].map((i) => (
                 <div key={i} className="space-y-6">
                   <Skeleton className="h-10 w-64" />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[1, 2, 3, 4].map((j) => (
                       <Skeleton key={j} className="h-48" />
                     ))}
@@ -81,24 +77,19 @@ export default function MenuPage() {
             </div>
           ) : (
             <div className="space-y-16">
-              {categories?.map((category, index) => {
+              {categories?.map((category) => {
                 const items = getItemsByCategory(category.id);
                 if (items.length === 0) return null;
 
                 return (
-                  <div key={category.id} id={category.id} data-testid={`category-${category.id}`}>
-                    <div className="flex items-center gap-3 mb-2">
-                      <h2 className="text-3xl font-semibold">{category.name}</h2>
-                      <Badge variant="outline" className="text-sm" data-testid={`category-counter-${category.id}`}>
-                        {index + 1}/{categories.length}
-                      </Badge>
-                    </div>
+                  <div key={category.id} data-testid={`category-${category.id}`}>
+                    <h2 className="text-3xl font-semibold mb-2">{category.name}</h2>
                     {category.description && (
                       <p className="text-muted-foreground mb-8 text-lg">
                         {category.description}
                       </p>
                     )}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {items.map((item) => (
                         <Card
                           key={item.id}
@@ -115,37 +106,49 @@ export default function MenuPage() {
                               />
                             </div>
                           )}
-                          <CardContent className="p-4">
-                            <div className="mb-3">
-                              <CardTitle className="text-lg mb-1 flex items-center gap-2 flex-wrap">
-                                {item.name}
-                                {item.popular && (
-                                  <Badge variant="secondary" className="text-xs py-0">
-                                    Popular
-                                  </Badge>
-                                )}
-                              </CardTitle>
-                              <CardDescription className="text-sm leading-relaxed line-clamp-2">
-                                {item.description}
-                              </CardDescription>
-                            </div>
-                            <div className="flex items-center justify-between gap-2 mb-3">
+                          <CardHeader>
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <CardTitle className="text-xl mb-2 flex items-center gap-2 flex-wrap">
+                                  {item.name}
+                                  {item.popular && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      Popular
+                                    </Badge>
+                                  )}
+                                </CardTitle>
+                                <CardDescription className="text-base leading-relaxed">
+                                  {item.description}
+                                </CardDescription>
+                              </div>
                               <span
-                                className="text-lg font-bold text-primary"
+                                className="text-xl font-bold text-primary whitespace-nowrap"
                                 data-testid={`price-${item.id}`}
                               >
-                                {item.price} DA
+                                {item.price} DZD
                               </span>
                             </div>
-                            <Button 
-                              onClick={() => handleAddToCart(item)}
-                              size="sm"
-                              className="w-full"
-                              data-testid={`button-add-cart-${item.id}`}
-                            >
-                              <Plus className="w-3 h-3 mr-1" />
-                              Add
-                            </Button>
+                          </CardHeader>
+                          <CardContent className="pt-0">
+                            <div className="flex gap-2">
+                              <Button 
+                                onClick={() => handleBuyNow(item)}
+                                className="flex-1"
+                                data-testid={`button-buy-now-${item.id}`}
+                              >
+                                <Zap className="w-3 h-3 mr-1" />
+                                Buy Now
+                              </Button>
+                              <Button 
+                                onClick={() => handleAddToCart(item)}
+                                variant="outline"
+                                className="flex-1"
+                                data-testid={`button-add-cart-${item.id}`}
+                              >
+                                <Plus className="w-3 h-3 mr-1" />
+                                Add
+                              </Button>
+                            </div>
                           </CardContent>
                         </Card>
                       ))}

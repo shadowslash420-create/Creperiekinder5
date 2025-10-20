@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShoppingCart, Plus } from "lucide-react";
+import { ShoppingCart, Plus, Zap } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { useToast } from "@/hooks/use-toast";
 import type { MenuItem, Category } from "@shared/schema";
@@ -17,8 +18,9 @@ export function MenuSection() {
     queryKey: ["/api/menu-items"],
   });
 
-  const { addItem } = useCart();
+  const { addItem, clearCart } = useCart();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const isLoading = categoriesLoading || itemsLoading;
 
@@ -32,6 +34,12 @@ export function MenuSection() {
       title: "Added to cart",
       description: `${item.name} has been added to your cart.`,
     });
+  };
+
+  const handleBuyNow = (item: MenuItem) => {
+    clearCart();
+    addItem(item);
+    setLocation("/checkout");
   };
 
   return (
@@ -117,14 +125,25 @@ export function MenuSection() {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <Button 
-                            onClick={() => handleAddToCart(item)}
-                            className="w-full"
-                            data-testid={`button-add-cart-${item.id}`}
-                          >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Add to Cart
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              onClick={() => handleBuyNow(item)}
+                              className="flex-1"
+                              data-testid={`button-buy-now-${item.id}`}
+                            >
+                              <Zap className="w-4 h-4 mr-2" />
+                              Buy Now
+                            </Button>
+                            <Button 
+                              onClick={() => handleAddToCart(item)}
+                              variant="outline"
+                              className="flex-1"
+                              data-testid={`button-add-cart-${item.id}`}
+                            >
+                              <Plus className="w-4 h-4 mr-2" />
+                              Add to Cart
+                            </Button>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
