@@ -37,7 +37,7 @@ export function HeroSection() {
           className="mb-6 backdrop-blur-md bg-white/10 border-white/20 text-white"
           data-testid="badge-tagline"
         >
-          Authentic French Cuisine
+          Imagine it, We Make it
         </Badge>
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
           Welcome to
