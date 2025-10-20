@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Zap, ShoppingCart } from "lucide-react";
 import type { MenuItem, Category } from "@shared/schema";
 import crepeImg from "@assets/generated_images/Chocolate_crepe_dessert_7dcc0141.png";
 import cheesecakeImg from "@assets/generated_images/Strawberry_cheesecake_slice_f00164f4.png";
@@ -14,6 +14,8 @@ import donutImg from "@assets/generated_images/Colorful_glazed_donuts_99c8d4cb.p
 import pancakeImg from "@assets/generated_images/Mini_pancakes_stack_a442a392.png";
 import fondantImg from "@assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png";
 import tiramisuImg from "@assets/Screenshot_20251020_105029_Instagram_1760953849027.jpg";
+import { useCart } from "@/hooks/use-cart";
+import { useToast } from "@/components/ui/use-toast";
 
 const categoryImages: Record<string, string> = {
   "crepe": crepeImg,
@@ -30,6 +32,9 @@ export function CategoryCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const { addItem, clearCart } = useCart();
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
@@ -70,6 +75,24 @@ export function CategoryCarousel() {
     (category) => getItemsByCategory(category.id).length > 0
   );
 
+  const handleBuyNow = (item: MenuItem) => {
+    clearCart(); // Clear existing cart items
+    addItem(item, 1); // Add the selected item
+    toast({
+      title: "Item added to cart",
+      description: `${item.name} has been added to your cart.`,
+    });
+    setLocation("/checkout"); // Redirect to checkout page
+  };
+
+  const handleAddToCart = (item: MenuItem) => {
+    addItem(item, 1);
+    toast({
+      title: "Item added to cart",
+      description: `${item.name} has been added to your cart.`,
+    });
+  };
+
   return (
     <section className="py-20 md:py-24 lg:py-32 bg-card">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
@@ -106,7 +129,7 @@ export function CategoryCarousel() {
                   {categoriesWithItems?.map((category) => {
                     const items = getItemsByCategory(category.id);
                     const categoryImage = categoryImages[category.id];
-                    
+
                     return (
                       <div
                         key={category.id}
@@ -151,33 +174,50 @@ export function CategoryCarousel() {
                           {items.slice(0, 4).map((item) => (
                             <Card
                               key={item.id}
-                              className="hover-elevate transition-shadow overflow-hidden"
-                              data-testid={`carousel-item-${item.id}`}
+                              className="overflow-hidden hover-elevate transition-all group"
+                              data-testid={`card-item-${item.id}`}
                             >
-                              {item.imageUrl && (
-                                <div className="aspect-square overflow-hidden bg-muted">
-                                  <img
-                                    src={item.imageUrl}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover"
-                                    data-testid={`img-${item.id}`}
-                                  />
-                                </div>
-                              )}
-                              <CardContent className="p-3">
-                                <h4 className="font-semibold text-sm mb-1">{item.name}</h4>
-                                <p className="text-xs text-muted-foreground mb-2 line-clamp-1">
+                              <div className="relative aspect-[4/3] overflow-hidden bg-muted cursor-pointer" onClick={() => handleBuyNow(item)}>
+                                <img
+                                  src={item.imageUrl}
+                                  alt={item.name}
+                                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                                  data-testid={`img-item-${item.id}`}
+                                />
+                                <Badge className="absolute top-3 right-3" data-testid={`badge-price-${item.id}`}>
+                                  {item.price} DA
+                                </Badge>
+                              </div>
+                              <CardContent className="p-4">
+                                <h4 className="font-semibold mb-1" data-testid={`title-item-${item.id}`}>
+                                  {item.name}
+                                </h4>
+                                <p className="text-sm text-muted-foreground line-clamp-2 mb-3" data-testid={`desc-item-${item.id}`}>
                                   {item.description}
                                 </p>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm font-bold text-primary" data-testid={`price-${item.id}`}>
-                                    {item.price} DA
-                                  </span>
-                                  {item.popular && (
-                                    <Badge variant="secondary" className="text-xs py-0">
-                                      Popular
-                                    </Badge>
-                                  )}
+                                <div className="flex gap-2">
+                                  <Button
+                                    onClick={() => handleBuyNow(item)}
+                                    size="sm"
+                                    className="flex-1"
+                                    data-testid={`button-buy-now-${item.id}`}
+                                  >
+                                    <Zap className="w-3 h-3 mr-1" />
+                                    Buy Now
+                                  </Button>
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleAddToCart(item);
+                                    }}
+                                    size="sm"
+                                    variant="outline"
+                                    className="flex-1"
+                                    data-testid={`button-add-cart-${item.id}`}
+                                  >
+                                    <ShoppingCart className="w-3 h-3 mr-1" />
+                                    Add
+                                  </Button>
                                 </div>
                               </CardContent>
                             </Card>
