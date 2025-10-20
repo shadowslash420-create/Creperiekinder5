@@ -48,9 +48,9 @@
 
   --popover-border: 240 6% 84%;
 
-  --primary: 38 92% 50%;
+  --primary: 0 85% 55%;
 
-  --primary-foreground: 20 14.3% 4.1%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 240 5% 94%;
 
@@ -166,9 +166,9 @@
 
   --popover-border: 240 4% 22%;
 
-  --primary: 38 90% 55%;
+  --primary: 0 85% 60%;
 
-  --primary-foreground: 20 14.3% 4.1%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 240 6% 16%;
 
@@ -389,7 +389,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 215, 0, 0.1) 50%,
+    rgba(220, 38, 38, 0.1) 50%,
     transparent 100%
   );
   background-size: 1000px 100%;
@@ -402,8 +402,8 @@
 
 .golden-glow {
   box-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.2),
-    0 0 40px rgba(255, 215, 0, 0.1);
+    0 0 20px rgba(220, 38, 38, 0.3),
+    0 0 40px rgba(220, 38, 38, 0.15);
 }
 
 @layer base {
@@ -431,7 +431,7 @@
 .crepe-circle {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, transparent 70%);
   filter: blur(40px);
 }
 

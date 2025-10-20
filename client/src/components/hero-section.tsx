@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroImage from "@assets/generated_images/Elegant_dessert_crepe_plating_aa7d0cbd.png";
 import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
+import kinderCrepe from "@assets/generated_images/Kinder_crepe_product_photo_7c9a3fe6.png";
 
 export function HeroSection() {
   return (
@@ -24,21 +25,23 @@ export function HeroSection() {
           <div className="crepe-circle crepe-circle-2"></div>
           <div className="crepe-circle crepe-circle-3"></div>
         </div>
+        {/* Subtle Kinder Accent */}
+        <div className="absolute bottom-32 right-16 opacity-10 animate-pulse hidden lg:block" style={{ animationDelay: '1.5s' }}>
+          <img src={kinderCrepe} alt="" className="w-28 h-28 rounded-full object-cover blur-sm" />
+        </div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-32 md:py-40 text-center">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white shadow-2xl overflow-hidden golden-glow">
+          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white overflow-hidden" style={{
+            boxShadow: '0 0 30px rgba(220, 38, 38, 0.4), 0 0 60px rgba(220, 38, 38, 0.2), 0 10px 40px rgba(0, 0, 0, 0.3)'
+          }}>
             <img
               src={logoImage}
               alt="Crêperie Kinder 5 Logo"
-              className="w-full h-full object-cover"
-              style={{
-                objectPosition: 'center center',
-                transform: 'scale(1.8)',
-              }}
+              className="w-full h-full object-cover scale-[1.8]"
               data-testid="img-logo"
             />
           </div>
