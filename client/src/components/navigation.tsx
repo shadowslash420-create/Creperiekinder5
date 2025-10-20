@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Menu, X, ShoppingCart } from "lucide-react";
