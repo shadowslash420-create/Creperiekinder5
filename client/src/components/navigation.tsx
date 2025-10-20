@@ -12,7 +12,8 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
+import { RotatingModel } from "@/components/rotating-model";
+import kinderEggModel from "@assets/kinder_surprise_egg_1760976354678.glb";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,10 +48,16 @@ export function Navigation() {
           scrolled ? 'h-14 md:h-16' : 'h-16 md:h-20'
         }`}>
           <Link href="/" className="flex items-center gap-2 text-xl md:text-2xl font-bold tracking-tight hover-elevate active-elevate-2 rounded-lg px-2 py-1 -ml-2" data-testid="link-home">
-            <div className={`rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
-              scrolled ? 'w-8 h-8 md:w-10 md:h-10' : 'w-10 h-10 md:w-12 md:h-12'
+            <div className={`rounded-full overflow-hidden shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
+              scrolled ? 'w-12 h-12 md:w-14 md:h-14' : 'w-16 h-16 md:w-20 md:h-20'
             }`}>
-              <img src={logoImage} alt="Kinder 5" className="w-full h-full object-cover scale-[1.8]" />
+              <RotatingModel
+                modelPath={kinderEggModel}
+                className="w-full h-full"
+                scale={2.5}
+                rotationSpeed={0.02}
+                cameraPosition={[0, 0, 3]}
+              />
             </div>
             <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie Kinder 5</span>
             <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Kinder 5</span>
