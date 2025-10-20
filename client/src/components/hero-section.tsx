@@ -47,13 +47,26 @@ export function HeroSection() {
           </div>
         </div>
 
-        <Badge
-          variant="secondary"
-          className="mb-6 backdrop-blur-md bg-white/10 border-white/20 text-white"
-          data-testid="badge-tagline"
-        >
-          Imagine it, We Make it
-        </Badge>
+        <div className="marquee-container mb-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-full overflow-hidden" data-testid="marquee-tagline">
+          <div className="marquee-content">
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+            <span className="marquee-item">Imagine it, We Make it</span>
+          </div>
+        </div>
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
           Welcome to
           <br />
