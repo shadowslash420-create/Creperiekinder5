@@ -68,7 +68,7 @@ export function Navigation() {
               <img 
                 src={kinderEggImage} 
                 alt="Kinder Egg" 
-                className="w-8 h-8 rotate-3d-egg"
+                className="w-8 h-8"
               />
               <Link href="/cart">
                 <Button variant="ghost" size="icon" className="relative" data-testid="button-cart">
@@ -98,7 +98,7 @@ export function Navigation() {
             <img 
               src={kinderEggImage} 
               alt="Kinder Egg" 
-              className="w-7 h-7 rotate-3d-egg"
+              className="w-7 h-7"
             />
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative" data-testid="button-mobile-cart">
