@@ -53,13 +53,18 @@ export default function MenuPage() {
             </div>
           ) : (
             <div className="space-y-16">
-              {categories?.map((category) => {
+              {categories?.map((category, index) => {
                 const items = getItemsByCategory(category.id);
                 if (items.length === 0) return null;
 
                 return (
                   <div key={category.id} data-testid={`category-${category.id}`}>
-                    <h2 className="text-3xl font-semibold mb-2">{category.name}</h2>
+                    <div className="flex items-center gap-3 mb-2">
+                      <h2 className="text-3xl font-semibold">{category.name}</h2>
+                      <Badge variant="outline" className="text-sm" data-testid={`category-counter-${category.id}`}>
+                        {index + 1}/{categories.length}
+                      </Badge>
+                    </div>
                     {category.description && (
                       <p className="text-muted-foreground mb-8 text-lg">
                         {category.description}
