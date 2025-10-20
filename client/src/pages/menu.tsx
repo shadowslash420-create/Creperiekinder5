@@ -83,7 +83,7 @@ export default function MenuPage() {
                         {category.description}
                       </p>
                     )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {items.map((item) => (
                         <Card
                           key={item.id}
@@ -100,29 +100,29 @@ export default function MenuPage() {
                               />
                             </div>
                           )}
-                          <CardHeader>
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <CardTitle className="text-xl mb-2 flex items-center gap-2 flex-wrap">
-                                  {item.name}
-                                  {item.popular && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      Popular
-                                    </Badge>
-                                  )}
-                                </CardTitle>
-                                <CardDescription className="text-base leading-relaxed">
-                                  {item.description}
-                                </CardDescription>
-                              </div>
+                          <CardContent className="p-4">
+                            <div className="mb-3">
+                              <CardTitle className="text-lg mb-1 flex items-center gap-2 flex-wrap">
+                                {item.name}
+                                {item.popular && (
+                                  <Badge variant="secondary" className="text-xs py-0">
+                                    Popular
+                                  </Badge>
+                                )}
+                              </CardTitle>
+                              <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                                {item.description}
+                              </CardDescription>
+                            </div>
+                            <div className="flex items-center justify-between">
                               <span
-                                className="text-xl font-bold text-primary whitespace-nowrap"
+                                className="text-lg font-bold text-primary"
                                 data-testid={`price-${item.id}`}
                               >
-                                {item.price} DZD
+                                {item.price} DA
                               </span>
                             </div>
-                          </CardHeader>
+                          </CardContent>
                         </Card>
                       ))}
                     </div>
