@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroImage from "@assets/generated_images/Elegant_dessert_crepe_plating_aa7d0cbd.png";
+import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
 
 export function HeroSection() {
   return (
@@ -21,6 +22,16 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-32 md:py-40 text-center">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <img
+            src={logoImage}
+            alt="Crêperie Kinder 5 Logo"
+            className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-2xl"
+            data-testid="img-logo"
+          />
+        </div>
+
         <Badge
           variant="secondary"
           className="mb-6 backdrop-blur-md bg-white/10 border-white/20 text-white"
