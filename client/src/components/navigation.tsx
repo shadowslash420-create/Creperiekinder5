@@ -38,8 +38,8 @@ export function Navigation() {
 
   return (
     <nav dir={dir} className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
-      scrolled 
-        ? 'bg-background/95 shadow-lg' 
+      scrolled
+        ? 'bg-background/95 shadow-lg'
         : 'bg-background/80'
     }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
@@ -50,7 +50,7 @@ export function Navigation() {
             <div className={`rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
               scrolled ? 'w-8 h-8 md:w-10 md:h-10' : 'w-10 h-10 md:w-12 md:h-12'
             }`}>
-              <img src={logoImage} alt="Kinder 5" className="w-full h-full object-cover scale-[1.8]" />
+              <img src="/attached_assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg" alt="Kinder 5" className="w-full h-full object-cover scale-[1.8]" />
             </div>
             <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie Kinder 5</span>
             <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Kinder 5</span>
@@ -67,7 +67,7 @@ export function Navigation() {
               <Button variant="ghost" size="icon" className="relative" data-testid="button-cart">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
-                  <Badge 
+                  <Badge
                     className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
                     data-testid="badge-cart-count"
                   >
@@ -91,7 +91,7 @@ export function Navigation() {
               <Button variant="ghost" size="icon" className="relative" data-testid="button-mobile-cart">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
-                  <Badge 
+                  <Badge
                     className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
                     data-testid="badge-mobile-cart-count"
                   >
