@@ -2,7 +2,7 @@ import { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment, PresentationControls } from "@react-three/drei";
 import { Card } from "@/components/ui/card";
-import { Loader2, Cube } from "lucide-react";
+import { Loader2, Box } from "lucide-react";
 
 interface Model3DProps {
   modelPath: string;
@@ -57,7 +57,7 @@ export function ModelViewer({
       <div className="w-full h-full min-h-[300px] md:min-h-[400px] flex items-center justify-center">
         {error ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-            <Cube className="w-16 h-16 text-red-500 mb-4" />
+            <Box className="w-16 h-16 text-red-500 mb-4" />
             <p className="text-lg font-semibold mb-2">3D Model Viewer</p>
             <p className="text-sm text-muted-foreground">Interactive 3D Kinder Egg model will appear here</p>
             <p className="text-xs text-muted-foreground mt-2">(Requires WebGL support in browser)</p>

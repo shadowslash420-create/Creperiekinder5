@@ -12,7 +12,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
