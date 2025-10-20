@@ -6,12 +6,6 @@ Crêperie Kinder 5 is a modern restaurant website for an authentic French crêpe
 
 ## Recent Changes (October 20, 2025)
 
-**Animated Logo (Latest)**
-- Animated gradient circle logo in navigation header with Kinder brand colors
-- Pulsing animation effect for visual interest
-- "K5" branding text overlay
-- CSS-based animation for universal browser compatibility
-
 **Shopping Cart & E-commerce**
 - Full shopping cart system with persistent localStorage state management via CartContext
 - Add-to-cart buttons on all menu items with visual feedback (toast notifications)
