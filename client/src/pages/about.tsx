@@ -50,7 +50,7 @@ export default function AboutPage() {
                 Bringing Algeria to Your Table
               </h1>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Since opening our doors, Crêperie Kinder 5 has been dedicated to
+                Since opening our doors, Crêperie has been dedicated to
                 bringing the authentic taste of Algeria to our community. Our passion
                 for traditional Algerian cuisine drives us to create exceptional crêpes
                 that transport you to the streets of Algiers with every bite.

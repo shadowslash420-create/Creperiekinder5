@@ -113,7 +113,7 @@ export class MemStorage implements IStorage {
       { id: randomUUID(), name: "Pistache", description: "Crêpe à la pistache", price: "250", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/pistachio_dessert_dc6583a5.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Nutela", description: "Crêpe au Nutella", price: "400", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/nutella_crepe_7c1c4a90.jpg", available: true, popular: true },
       { id: randomUUID(), name: "Lotus", description: "Crêpe au Lotus", price: "400", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
-      { id: randomUUID(), name: "Kinder", description: "Crêpe au Kinder", price: "700", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
+      
       { id: randomUUID(), name: "Pasta", description: "Crêpe Pasta", price: "300", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Farsi", description: "Crêpe Farsi", price: "500", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Sushi", description: "Crêpe Sushi", price: "350", categoryId: "crepe", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
@@ -134,13 +134,13 @@ export class MemStorage implements IStorage {
       { id: randomUUID(), name: "Miel-Caramel", description: "Donut miel-caramel", price: "300", categoryId: "donuts", imageUrl: "/attached_assets/stock_images/chocolate_donut_b817abf3.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Banane", description: "Donut à la banane", price: "400", categoryId: "donuts", imageUrl: "/attached_assets/stock_images/chocolate_donut_b817abf3.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Fruit", description: "Donut aux fruits", price: "450", categoryId: "donuts", imageUrl: "/attached_assets/stock_images/chocolate_donut_b817abf3.jpg", available: true, popular: false },
-      { id: randomUUID(), name: "Kinder", description: "Donut Kinder", price: "700", categoryId: "donuts", imageUrl: "/attached_assets/stock_images/chocolate_donut_b817abf3.jpg", available: true, popular: true },
+      
 
       { id: randomUUID(), name: "Choco", description: "Mini-pancakes au chocolat", price: "300", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: true },
       { id: randomUUID(), name: "Miel-Caramel", description: "Mini-pancakes miel-caramel", price: "300", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Banane", description: "Mini-pancakes à la banane", price: "400", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Fruit", description: "Mini-pancakes aux fruits", price: "450", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: false },
-      { id: randomUUID(), name: "Kinder", description: "Mini-pancakes Kinder", price: "700", categoryId: "mini-pancakes", imageUrl: "/attached_assets/stock_images/mini_pancakes_6dafaab1.jpg", available: true, popular: true },
+      
 
       { id: randomUUID(), name: "Chocolat", description: "Fondant au chocolat", price: "500", categoryId: "fondant", imageUrl: "/attached_assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png", available: true, popular: true },
       { id: randomUUID(), name: "Nutella", description: "Fondant au Nutella", price: "650", categoryId: "fondant", imageUrl: "/attached_assets/generated_images/Chocolate_fondant_dessert_cd16ade4.png", available: true, popular: true },
@@ -150,7 +150,7 @@ export class MemStorage implements IStorage {
       { id: randomUUID(), name: "Simple", description: "Tiramisu simple", price: "300", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
       { id: randomUUID(), name: "Banane", description: "Tiramisu à la banane", price: "400", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Fruit", description: "Tiramisu aux fruits", price: "450", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: false },
-      { id: randomUUID(), name: "Kinder", description: "Tiramisu Kinder", price: "700", categoryId: "tiramisu", imageUrl: "/attached_assets/stock_images/chocolate_crepe_dess_6be21cf5.jpg", available: true, popular: true },
+      
 
       { id: randomUUID(), name: "Jus Banane", description: "Jus de banane frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/stock_images/orange_juice_glass_9aef8a57.jpg", available: true, popular: false },
       { id: randomUUID(), name: "Jus Orange", description: "Jus d'orange frais", price: "300", categoryId: "boissons-fraiches", imageUrl: "/attached_assets/stock_images/orange_juice_glass_9aef8a57.jpg", available: true, popular: true },

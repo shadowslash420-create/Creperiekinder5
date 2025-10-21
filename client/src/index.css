@@ -473,12 +473,12 @@
   animation-delay: -5s;
 }
 
-.kinder-wave-decoration {
+.brand-wave-decoration {
   position: relative;
   overflow: hidden;
 }
 
-.kinder-wave-decoration::before {
+.brand-wave-decoration::before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -490,7 +490,7 @@
   z-index: 0;
 }
 
-.kinder-wave-decoration::after {
+.brand-wave-decoration::after {
   content: 'MENU';
   position: absolute;
   font-size: 10rem;

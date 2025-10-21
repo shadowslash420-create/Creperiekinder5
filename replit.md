@@ -1,8 +1,8 @@
-# Crêperie Kinder 5 - Restaurant Website
+# Crêperie - Restaurant Website
 
 ## Overview
 
-Crêperie Kinder 5 is a modern restaurant website for an authentic French crêperie with full e-commerce capabilities. The application allows customers to browse the menu, add items to a shopping cart, place orders with personal information, make reservations, and learn about the restaurant. Built as a full-stack web application, it features a React frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence.
+Crêperie is a modern restaurant website for an authentic French crêperie with full e-commerce capabilities. The application allows customers to browse the menu, add items to a shopping cart, place orders with personal information, make reservations, and learn about the restaurant. Built as a full-stack web application, it features a React frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence.
 
 ## Recent Changes (October 20, 2025)
 
