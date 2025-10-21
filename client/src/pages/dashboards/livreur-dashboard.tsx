@@ -64,7 +64,7 @@ export default function LivreurDashboard() {
   };
 
   const pendingOrders = orders.filter(o => o.status === 'pending');
-  const myOrders = orders.filter(o => o.status !== 'pending');
+  const myOrders = orders.filter(o => o.status !== 'pending' && o.status !== 'refused');
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,7 +96,7 @@ export default function LivreurDashboard() {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Pending Orders</CardTitle>
-            <CardDescription>Orders waiting for confirmation</CardDescription>
+            <CardDescription>New orders waiting for your confirmation</CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -106,30 +106,40 @@ export default function LivreurDashboard() {
             ) : (
               <div className="space-y-4">
                 {pendingOrders.map((order) => (
-                  <div key={order.id} className="border rounded-lg p-4">
+                  <div key={order.id} className="border rounded-lg p-4 bg-yellow-50">
                     <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className="font-bold">{order.customerName}</p>
-                        <p className="text-sm text-muted-foreground">Tel: {order.customerPhone}</p>
+                      <div className="flex-1">
+                        <p className="font-bold text-lg">{order.customerName}</p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          📞 {order.customerPhone}
+                        </p>
                         {order.deliveryAddress && (
-                          <p className="text-sm text-muted-foreground">Address: {order.deliveryAddress}</p>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            📍 {order.deliveryAddress}
+                          </p>
                         )}
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Type: <span className="font-medium">{order.orderType}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Ordered: {new Date(order.createdAt).toLocaleString()}
+                        </p>
                       </div>
-                      <p className="font-bold text-lg">{order.totalAmount} DT</p>
+                      <p className="font-bold text-xl">{order.totalAmount} DT</p>
                     </div>
                     <div className="flex gap-2 mt-4">
                       <Button 
                         onClick={() => handleOrderAction(order.id, 'confirmed')}
-                        className="flex-1"
+                        className="flex-1 bg-green-600 hover:bg-green-700"
                       >
-                        Confirm
+                        Accept & Deliver
                       </Button>
                       <Button 
                         onClick={() => handleOrderAction(order.id, 'refused')}
                         variant="destructive"
                         className="flex-1"
                       >
-                        Refuse
+                        Decline
                       </Button>
                     </div>
                   </div>
@@ -142,7 +152,7 @@ export default function LivreurDashboard() {
         <Card>
           <CardHeader>
             <CardTitle>My Deliveries</CardTitle>
-            <CardDescription>Orders you've confirmed</CardDescription>
+            <CardDescription>Orders you've accepted for delivery</CardDescription>
           </CardHeader>
           <CardContent>
             {myOrders.length === 0 ? (
@@ -151,24 +161,43 @@ export default function LivreurDashboard() {
               <div className="space-y-4">
                 {myOrders.map((order) => (
                   <div key={order.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-center">
-                      <div>
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
                         <p className="font-bold">{order.customerName}</p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(order.createdAt).toLocaleDateString()}
+                          📞 {order.customerPhone}
+                        </p>
+                        {order.deliveryAddress && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            📍 {order.deliveryAddress}
+                          </p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {new Date(order.createdAt).toLocaleString()}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold">{order.totalAmount} DT</p>
-                        <span className={`text-xs px-2 py-1 rounded ${
+                        <p className="font-bold text-lg">{order.totalAmount} DT</p>
+                        <span className={`text-xs px-2 py-1 rounded mt-1 inline-block ${
                           order.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                          order.status === 'refused' ? 'bg-red-100 text-red-800' :
+                          order.status === 'delivered' ? 'bg-blue-100 text-blue-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>
                           {order.status}
                         </span>
                       </div>
                     </div>
+                    {order.status === 'confirmed' && (
+                      <div className="mt-3">
+                        <Button 
+                          onClick={() => handleOrderAction(order.id, 'delivered')}
+                          className="w-full"
+                          size="sm"
+                        >
+                          Mark as Delivered
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

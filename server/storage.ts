@@ -1,7 +1,7 @@
-import { 
-  type Category, 
+import {
+  type Category,
   type InsertCategory,
-  type MenuItem, 
+  type MenuItem,
   type InsertMenuItem,
   type Reservation,
   type InsertReservation,
@@ -41,6 +41,7 @@ export interface IStorage {
   updateOrder(id: string, updates: Partial<Order>): Promise<Order | undefined>;
   getOrdersByUser(userId: number): Promise<Order[]>;
   getOrdersByLivreur(livreurId: number): Promise<Order[]>;
+  getPendingOrders(): Promise<Order[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -64,7 +65,7 @@ export class MemStorage implements IStorage {
 
   private async initializeDefaultData() {
     const bcrypt = await import('bcryptjs');
-    
+
     // Create default test users
     const defaultUsers = [
       {
@@ -245,7 +246,7 @@ export class MemStorage implements IStorage {
         available: item.available,
         popular: item.popular,
       };
-      this.menuItems.set(menuItem.id, menuItem);
+      this.menuItems.set(menuItem.id, item);
     });
   }
 
@@ -373,6 +374,12 @@ export class MemStorage implements IStorage {
     return Array.from(this.orders.values())
       .filter(order => order.livreurId === livreurId)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getPendingOrders(): Promise<Order[]> {
+    return Array.from(this.orders.values())
+      .filter(order => order.status === 'pending')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   }
 
   async getUserById(id: number): Promise<User | undefined> {

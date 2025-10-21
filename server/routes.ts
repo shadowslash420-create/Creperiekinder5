@@ -86,9 +86,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       let orders;
       if (user.role === "owner") {
+        // Owner sees all orders
         orders = await storage.getOrders();
       } else if (user.role === "livreur") {
-        orders = await storage.getOrdersByLivreur(user.id);
+        // Livreur sees pending orders + their assigned orders
+        const pendingOrders = await storage.getPendingOrders();
+        const assignedOrders = await storage.getOrdersByLivreur(user.id);
+        
+        // Combine and remove duplicates
+        const orderMap = new Map();
+        [...pendingOrders, ...assignedOrders].forEach(order => {
+          orderMap.set(order.id, order);
+        });
+        orders = Array.from(orderMap.values());
       } else {
         orders = await storage.getOrdersByUser(user.id);
       }
@@ -131,10 +141,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       if (user.role === "livreur" || user.role === "owner") {
-        const updates: any = {};
-        if (req.body.status) updates.status = req.body.status;
-        if (user.role === "livreur" && !order.livreurId) {
-          updates.livreurId = user.id;
+        const updates: any = { updatedAt: new Date() };
+        
+        // Handle status updates
+        if (req.body.status) {
+          updates.status = req.body.status;
+          
+          // If confirming order and it's a livreur, assign them
+          if (req.body.status === 'confirmed' && user.role === "livreur" && !order.livreurId) {
+            updates.livreurId = user.id;
+          }
         }
 
         const updatedOrder = await storage.updateOrder(req.params.id, updates);

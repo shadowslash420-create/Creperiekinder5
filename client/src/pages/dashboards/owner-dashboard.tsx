@@ -48,6 +48,23 @@ export default function OwnerDashboard() {
     }
   };
 
+  const handleOrderAction = async (orderId: string, status: string) => {
+    try {
+      const response = await fetch(`/api/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        fetchData();
+      }
+    } catch (error) {
+      console.error('Failed to update order:', error);
+    }
+  };
+
   const handleLogout = async () => {
     await logout();
     setLocation('/');
@@ -90,8 +107,8 @@ export default function OwnerDashboard() {
 
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
-            <CardDescription>All orders from all customers</CardDescription>
+            <CardTitle>All Orders</CardTitle>
+            <CardDescription>Manage all customer orders</CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -100,27 +117,48 @@ export default function OwnerDashboard() {
               <p className="text-center text-muted-foreground">No orders yet</p>
             ) : (
               <div className="space-y-4">
-                {orders.slice(0, 10).map((order) => (
-                  <div key={order.id} className="flex justify-between items-center p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{order.customerName}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold">{order.totalAmount} DT</p>
-                      <p className="text-sm">
-                        <span className={`px-2 py-1 rounded ${
+                {orders.map((order) => (
+                  <div key={order.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="font-bold">{order.customerName}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(order.createdAt).toLocaleDateString()} at{' '}
+                          {new Date(order.createdAt).toLocaleTimeString()}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-lg">{order.totalAmount} DT</p>
+                        <span className={`text-xs px-2 py-1 rounded ${
                           order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                           order.status === 'confirmed' ? 'bg-green-100 text-green-800' :
                           order.status === 'refused' ? 'bg-red-100 text-red-800' :
+                          order.status === 'delivered' ? 'bg-blue-100 text-blue-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>
                           {order.status}
                         </span>
-                      </p>
+                      </div>
                     </div>
+                    {order.status === 'pending' && (
+                      <div className="flex gap-2 mt-4">
+                        <Button 
+                          onClick={() => handleOrderAction(order.id, 'confirmed')}
+                          className="flex-1"
+                          size="sm"
+                        >
+                          Confirm Order
+                        </Button>
+                        <Button 
+                          onClick={() => handleOrderAction(order.id, 'refused')}
+                          variant="destructive"
+                          className="flex-1"
+                          size="sm"
+                        >
+                          Decline Order
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
