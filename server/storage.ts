@@ -62,7 +62,48 @@ export class MemStorage implements IStorage {
     this.initializeDefaultData();
   }
 
-  private initializeDefaultData() {
+  private async initializeDefaultData() {
+    const bcrypt = await import('bcryptjs');
+    
+    // Create default test users
+    const defaultUsers = [
+      {
+        id: 1,
+        email: 'test@test.com',
+        password: bcrypt.hashSync('password123', 10),
+        name: 'Test User',
+        phone: null,
+        role: 'client' as const,
+        active: true,
+        createdAt: new Date(),
+      },
+      {
+        id: 2,
+        email: 'owner@kinder.com',
+        password: bcrypt.hashSync('owner123', 10),
+        name: 'Restaurant Owner',
+        phone: '+213 555 000 001',
+        role: 'owner' as const,
+        active: true,
+        createdAt: new Date(),
+      },
+      {
+        id: 3,
+        email: 'livreur@kinder.com',
+        password: bcrypt.hashSync('livreur123', 10),
+        name: 'Delivery Person',
+        phone: '+213 555 000 002',
+        role: 'livreur' as const,
+        active: true,
+        createdAt: new Date(),
+      }
+    ];
+
+    defaultUsers.forEach(user => {
+      this.users.set(user.id, user);
+    });
+    this.userIdCounter = 4; // Start from 4 for new users
+
     const categoriesData = [
       {
         id: "crepe",
