@@ -6,11 +6,20 @@ import {
   type Reservation,
   type InsertReservation,
   type Order,
-  type InsertOrder
+  type InsertOrder,
+  type User,
+  type InsertUser
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
+  // Users
+  getUserById(id: number): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
+
   // Categories
   getCategories(): Promise<Category[]>;
   createCategory(category: InsertCategory): Promise<Category>;
@@ -27,20 +36,28 @@ export interface IStorage {
 
   // Orders
   getOrders(): Promise<Order[]>;
+  getOrder(id: string): Promise<Order | undefined>;
   createOrder(order: InsertOrder): Promise<Order>;
+  updateOrder(id: string, updates: Partial<Order>): Promise<Order | undefined>;
+  getOrdersByUser(userId: number): Promise<Order[]>;
+  getOrdersByLivreur(livreurId: number): Promise<Order[]>;
 }
 
 export class MemStorage implements IStorage {
+  private users: Map<number, User>;
   private categories: Map<string, Category>;
   private menuItems: Map<string, MenuItem>;
   private reservations: Map<string, Reservation>;
   private orders: Map<string, Order>;
+  private userIdCounter: number;
 
   constructor() {
+    this.users = new Map();
     this.categories = new Map();
     this.menuItems = new Map();
     this.reservations = new Map();
     this.orders = new Map();
+    this.userIdCounter = 1;
 
     this.initializeDefaultData();
   }
@@ -274,6 +291,7 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const order: Order = {
       id,
+      userId: insertOrder.userId ?? null,
       customerName: insertOrder.customerName,
       customerEmail: insertOrder.customerEmail,
       customerPhone: insertOrder.customerPhone,
@@ -283,10 +301,76 @@ export class MemStorage implements IStorage {
       deliveryAddress: insertOrder.deliveryAddress ?? null,
       notes: insertOrder.notes ?? null,
       status: "pending",
+      livreurId: insertOrder.livreurId ?? null,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.orders.set(id, order);
     return order;
+  }
+
+  async getOrder(id: string): Promise<Order | undefined> {
+    return this.orders.get(id);
+  }
+
+  async updateOrder(id: string, updates: Partial<Order>): Promise<Order | undefined> {
+    const order = this.orders.get(id);
+    if (!order) return undefined;
+
+    const updatedOrder = { ...order, ...updates, updatedAt: new Date() };
+    this.orders.set(id, updatedOrder);
+    return updatedOrder;
+  }
+
+  async getOrdersByUser(userId: number): Promise<Order[]> {
+    return Array.from(this.orders.values())
+      .filter(order => order.userId === userId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getOrdersByLivreur(livreurId: number): Promise<Order[]> {
+    return Array.from(this.orders.values())
+      .filter(order => order.livreurId === livreurId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getUserById(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(user => user.email === email);
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.userIdCounter++;
+    const user: User = {
+      id,
+      email: insertUser.email,
+      password: insertUser.password,
+      name: insertUser.name,
+      phone: insertUser.phone ?? null,
+      role: insertUser.role ?? "client",
+      active: true,
+      createdAt: new Date(),
+    };
+    this.users.set(id, user);
+    return user;
+  }
+
+  async updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+
+    const updatedUser = { ...user, ...updates };
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
   }
 }
 

@@ -2,8 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertReservationSchema, insertOrderSchema } from "@shared/schema";
+import authRouter, { requireAuth, requireRole } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth routes
+  app.use("/api/auth", authRouter);
+
   // Configuration endpoint for frontend
   app.get("/api/config", (req, res) => {
     res.json({
@@ -73,9 +77,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Orders endpoints
-  app.get("/api/orders", async (req, res) => {
+  app.get("/api/orders", requireAuth, async (req: any, res) => {
     try {
-      const orders = await storage.getOrders();
+      const user = await storage.getUserById(req.session.userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      let orders;
+      if (user.role === "owner") {
+        orders = await storage.getOrders();
+      } else if (user.role === "livreur") {
+        orders = await storage.getOrdersByLivreur(user.id);
+      } else {
+        orders = await storage.getOrdersByUser(user.id);
+      }
+
       res.json(orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -83,9 +100,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/orders", async (req, res) => {
+  app.post("/api/orders", async (req: any, res) => {
     try {
-      const validatedData = insertOrderSchema.parse(req.body);
+      const userId = req.session?.userId;
+      const validatedData = insertOrderSchema.parse({
+        ...req.body,
+        userId: userId || null,
+      });
       const order = await storage.createOrder(validatedData);
       res.status(201).json(order);
     } catch (error: any) {
@@ -94,6 +115,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Invalid order data", details: error.errors });
       }
       res.status(500).json({ error: "Failed to create order" });
+    }
+  });
+
+  app.patch("/api/orders/:id", requireAuth, async (req: any, res) => {
+    try {
+      const user = await storage.getUserById(req.session.userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const order = await storage.getOrder(req.params.id);
+      if (!order) {
+        return res.status(404).json({ error: "Order not found" });
+      }
+
+      if (user.role === "livreur" || user.role === "owner") {
+        const updates: any = {};
+        if (req.body.status) updates.status = req.body.status;
+        if (user.role === "livreur" && !order.livreurId) {
+          updates.livreurId = user.id;
+        }
+
+        const updatedOrder = await storage.updateOrder(req.params.id, updates);
+        return res.json(updatedOrder);
+      }
+
+      return res.status(403).json({ error: "Not authorized to update orders" });
+    } catch (error) {
+      console.error("Error updating order:", error);
+      res.status(500).json({ error: "Failed to update order" });
+    }
+  });
+
+  app.get("/api/users", requireRole("owner"), async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      const usersWithoutPasswords = users.map(({ password, ...user }) => user);
+      res.json(usersWithoutPasswords);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).json({ error: "Failed to fetch users" });
     }
   });
 

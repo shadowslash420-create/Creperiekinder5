@@ -1,6 +1,32 @@
-import { pgTable, text, varchar, decimal, integer, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, decimal, integer, timestamp, boolean, serial } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
+
+// Users
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  password: text("password").notNull(),
+  name: text("name").notNull(),
+  phone: text("phone"),
+  role: text("role").notNull().default("client"), // 'owner', 'livreur', 'client'
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  active: true,
+  createdAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  role: z.enum(["owner", "livreur", "client"]).default("client"),
+});
+
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type User = typeof users.$inferSelect;
 
 // Menu Categories
 export const categories = pgTable("categories", {
@@ -66,16 +92,19 @@ export type Reservation = typeof reservations.$inferSelect;
 // Orders
 export const orders = pgTable("orders", {
   id: varchar("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
   customerName: text("customer_name").notNull(),
   customerEmail: text("customer_email").notNull(),
   customerPhone: text("customer_phone").notNull(),
   items: text("items").notNull(), // JSON string of order items
   totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
-  status: text("status").notNull().default("pending"),
+  status: text("status").notNull().default("pending"), // 'pending', 'confirmed', 'refused', 'preparing', 'ready', 'delivered'
   orderType: text("order_type").notNull(), // 'pickup' or 'delivery'
   deliveryAddress: text("delivery_address"),
   notes: text("notes"),
+  livreurId: integer("livreur_id").references(() => users.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const insertOrderSchema = createInsertSchema(orders).omit({
@@ -89,3 +118,20 @@ export const insertOrderSchema = createInsertSchema(orders).omit({
 
 export type InsertOrder = z.infer<typeof insertOrderSchema>;
 export type Order = typeof orders.$inferSelect;
+
+// Relations
+export const usersRelations = relations(users, ({ many }) => ({
+  orders: many(orders),
+  deliveries: many(orders),
+}));
+
+export const ordersRelations = relations(orders, ({ one }) => ({
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+  }),
+  livreur: one(users, {
+    fields: [orders.livreurId],
+    references: [users.id],
+  }),
+}));
