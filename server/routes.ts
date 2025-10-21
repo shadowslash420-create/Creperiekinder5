@@ -159,6 +159,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/users/create-staff", requireRole("owner"), async (req: any, res) => {
+    try {
+      const { email, password, name, phone, role } = req.body;
+
+      if (!email || !password || !name || !role) {
+        return res.status(400).json({ error: 'Email, password, name, and role are required' });
+      }
+
+      if (!['owner', 'livreur'].includes(role)) {
+        return res.status(400).json({ error: 'Invalid role. Must be owner or livreur' });
+      }
+
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(400).json({ error: 'Email already registered' });
+      }
+
+      const bcrypt = await import('bcryptjs');
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const user = await storage.createUser({
+        email,
+        password: hashedPassword,
+        name,
+        phone: phone || null,
+        role,
+      });
+
+      const { password: _, ...userWithoutPassword } = user;
+      res.status(201).json(userWithoutPassword);
+    } catch (error) {
+      console.error("Error creating staff user:", error);
+      res.status(500).json({ error: "Failed to create staff user" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

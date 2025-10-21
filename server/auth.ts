@@ -19,7 +19,7 @@ interface AuthRequest extends Request {
 
 router.post('/register', async (req: AuthRequest, res: Response) => {
   try {
-    const { email, password, name, phone, role } = req.body;
+    const { email, password, name, phone } = req.body;
 
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password, and name are required' });
@@ -37,7 +37,7 @@ router.post('/register', async (req: AuthRequest, res: Response) => {
       password: hashedPassword,
       name,
       phone: phone || null,
-      role: role || 'client',
+      role: 'client',
     });
 
     req.session.userId = user.id;

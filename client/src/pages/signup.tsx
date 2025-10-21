@@ -42,8 +42,7 @@ export default function Signup() {
         formData.email,
         formData.password,
         formData.name,
-        formData.phone || undefined,
-        formData.role
+        formData.phone || undefined
       );
       setLocation('/dashboard');
     } catch (err: any) {
@@ -105,19 +104,6 @@ export default function Signup() {
                 value={formData.phone}
                 onChange={(e) => updateField('phone', e.target.value)}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="role">Account Type</Label>
-              <Select value={formData.role} onValueChange={(value) => updateField('role', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="client">Client - Browse and order</SelectItem>
-                  <SelectItem value="livreur">Delivery - Manage deliveries</SelectItem>
-                  <SelectItem value="owner">Owner - Full control</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
