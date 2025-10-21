@@ -1,7 +1,6 @@
 import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { CategoryCarousel } from "@/components/category-carousel";
-import { KinderShowcase } from "@/components/kinder-showcase";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
-        <KinderShowcase />
         <CategoryCarousel />
       </main>
       <Footer />

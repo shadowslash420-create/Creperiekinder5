@@ -12,7 +12,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* About */}
           <div>
-            <h3 className="font-bold text-lg mb-4 text-white">Crêperie Kinder 5</h3>
+            <h3 className="font-bold text-lg mb-4 text-white">Crêperie</h3>
             <p className="text-white/90 leading-relaxed">
               Authentic Algerian crêpes made with love and tradition. Experience
               the taste of Algeria in every bite.
@@ -54,7 +54,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2 text-white/80">
                 <Mail className="w-4 h-4 mt-1 flex-shrink-0" />
-                <span className="text-sm">hello@creperie-kinder5.fr</span>
+                <span className="text-sm">hello@creperie.fr</span>
               </li>
             </ul>
           </div>
@@ -77,7 +77,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-white/20 text-center text-sm text-white/70">
           <p>
-            © {currentYear} Crêperie Kinder 5. All rights reserved.
+            © {currentYear} Crêperie. All rights reserved.
           </p>
         </div>
       </div>

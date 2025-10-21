@@ -50,10 +50,10 @@ export function Navigation() {
             <div className={`rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center logo-transition transition-all duration-300 ${
               scrolled ? 'w-8 h-8 md:w-10 md:h-10' : 'w-10 h-10 md:w-12 md:h-12'
             }`}>
-              <img src="/attached_assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg" alt="Kinder 5" className="w-full h-full object-cover scale-[1.8]" />
+              <img src="/attached_assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg" alt="Logo" className="w-full h-full object-cover scale-[1.8]" />
             </div>
-            <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie Kinder 5</span>
-            <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Kinder 5</span>
+            <span className={`hidden sm:inline transition-all duration-300 ${scrolled ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>Crêperie</span>
+            <span className={`sm:hidden transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>Crêperie</span>
           </Link>
 
           {/* Desktop Navigation */}

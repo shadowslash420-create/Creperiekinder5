@@ -22,7 +22,7 @@ const translations: Translations = {
 
   // Hero Section
   "hero.welcome": { en: "Welcome to", ar: "مرحبا بكم في", fr: "Bienvenue à" },
-  "hero.title": { en: "Crêperie Kinder 5", ar: "كريب كيندر 5", fr: "Crêperie Kinder 5" },
+  "hero.title": { en: "Crêperie", ar: "كريب", fr: "Crêperie" },
   "hero.description": {
     en: "Experience the authentic taste of Algeria with our handcrafted crêpes. From sweet to savory, each creation is made with traditional recipes and the finest ingredients.",
     ar: "اختبر المذاق الأصيل للجزائر مع الكريب المصنوع يدويًا. من الحلو إلى المالح، كل إبداع مصنوع بوصفات تقليدية وأفضل المكونات.",

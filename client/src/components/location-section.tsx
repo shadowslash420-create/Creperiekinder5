@@ -13,7 +13,7 @@ export function LocationSection() {
     {
       icon: MapPin,
       title: "Address",
-      content: "Crêperie Kinder 5, Algeria",
+      content: "Crêperie, Algeria",
       action: "Get Directions",
       link: "https://maps.app.goo.gl/q2Fzgr1BJifGT5A88",
     },
@@ -27,9 +27,9 @@ export function LocationSection() {
     {
       icon: Mail,
       title: "Email",
-      content: "contact@kinder5.dz",
+      content: "contact@creperie.dz",
       action: "Send Email",
-      link: "mailto:contact@kinder5.dz",
+      link: "mailto:contact@creperie.dz",
     },
   ];
 

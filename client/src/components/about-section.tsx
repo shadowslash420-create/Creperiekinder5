@@ -48,7 +48,7 @@ export function AboutSection() {
               Bringing France to Your Table
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Since opening our doors, Crêperie Kinder 5 has been dedicated to
+              Since opening our doors, Crêperie has been dedicated to
               bringing the authentic taste of France to our community. Our passion
               for traditional French cuisine drives us to create exceptional crêpes
               that transport you to the streets of Paris with every bite.

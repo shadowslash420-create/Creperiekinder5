@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/language-context";
 import heroImage from "@assets/generated_images/Elegant_dessert_crepe_plating_aa7d0cbd.png";
 import logoImage from "@assets/Screenshot_20251020_093011_Instagram_1760949023207.jpg";
-import kinderCrepe from "@assets/generated_images/Kinder_crepe_product_photo_7c9a3fe6.png";
 
 export function HeroSection() {
   const { t, dir } = useLanguage();
@@ -28,10 +27,7 @@ export function HeroSection() {
           <div className="crepe-circle crepe-circle-2"></div>
           <div className="crepe-circle crepe-circle-3"></div>
         </div>
-        {/* Subtle Kinder Accent */}
-        <div className="absolute bottom-32 right-16 opacity-10 animate-pulse hidden lg:block" style={{ animationDelay: '1.5s' }}>
-          <img src={kinderCrepe} alt="" className="w-28 h-28 rounded-full object-cover blur-sm" />
-        </div>
+        
       </div>
 
       {/* Content */}
@@ -43,7 +39,7 @@ export function HeroSection() {
           }}>
             <img
               src={logoImage}
-              alt="Crêperie Kinder 5 Logo"
+              alt="Crêperie Logo"
               className="w-full h-full object-cover scale-[1.8]"
               data-testid="img-logo"
             />
