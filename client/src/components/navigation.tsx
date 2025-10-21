@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useCart } from "@/contexts/cart-context";
 import { useLanguage } from "@/contexts/language-context";
+import { useAuth } from "@/contexts/auth-context";
 import {
   Sheet,
   SheetContent,
@@ -19,6 +20,7 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
   const { t, dir } = useLanguage();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +80,18 @@ export function Navigation() {
             </Link>
             <LanguageSwitcher />
             <ThemeToggle />
+            {user ? (
+              <Link href="/dashboard">
+                <Button variant="outline" className="gap-2">
+                  <User className="h-4 w-4" />
+                  {user.name}
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button variant="outline">Sign In</Button>
+              </Link>
+            )}
             <Link href="/reservations">
               <Button data-testid="button-reserve-cta">
                 {t("nav.reserve")}
@@ -115,6 +129,20 @@ export function Navigation() {
                       {item.label}
                     </Link>
                   ))}
+                  {user ? (
+                    <Link href="/dashboard">
+                      <Button variant="outline" className="w-full gap-2" onClick={() => setIsOpen(false)}>
+                        <User className="h-4 w-4" />
+                        {user.name}
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/login">
+                      <Button variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
+                        Sign In
+                      </Button>
+                    </Link>
+                  )}
                   <Link href="/reservations">
                     <Button className="w-full" data-testid="button-mobile-reserve" onClick={() => setIsOpen(false)}>
                       {t("nav.reserve")}
