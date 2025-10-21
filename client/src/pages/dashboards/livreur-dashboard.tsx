@@ -75,7 +75,7 @@ export default function LivreurDashboard() {
             <h1 className="text-3xl font-bold">Delivery Dashboard</h1>
             <p className="text-muted-foreground">Welcome, {user?.name}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline">Logout</Button>
+          <Button onClick={handleLogout} variant="outline" className="mt-4">Logout</Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

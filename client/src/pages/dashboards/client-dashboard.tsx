@@ -53,7 +53,7 @@ export default function ClientDashboard() {
             <h1 className="text-3xl font-bold">My Account</h1>
             <p className="text-muted-foreground">Welcome, {user?.name}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline">Logout</Button>
+          <Button onClick={handleLogout} variant="outline" className="mt-4">Logout</Button>
         </div>
 
         <Card className="mb-8">

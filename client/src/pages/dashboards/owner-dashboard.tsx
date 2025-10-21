@@ -62,7 +62,7 @@ export default function OwnerDashboard() {
             <h1 className="text-3xl font-bold">Owner Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, {user?.name}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline">Logout</Button>
+          <Button onClick={handleLogout} variant="outline" className="mt-4">Logout</Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

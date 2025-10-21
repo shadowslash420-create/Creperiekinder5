@@ -80,7 +80,7 @@ export class MemStorage implements IStorage {
       {
         id: 2,
         email: 'owner@kinder.com',
-        password: bcrypt.hashSync('owner123', 10),
+        password: bcrypt.hashSync('bmw m5 competition nchlh', 10),
         name: 'Restaurant Owner',
         phone: '+213 555 000 001',
         role: 'owner' as const,
@@ -90,7 +90,7 @@ export class MemStorage implements IStorage {
       {
         id: 3,
         email: 'livreur@kinder.com',
-        password: bcrypt.hashSync('livreur123', 10),
+        password: bcrypt.hashSync('e60 competition nchlh', 10),
         name: 'Delivery Person',
         phone: '+213 555 000 002',
         role: 'livreur' as const,
