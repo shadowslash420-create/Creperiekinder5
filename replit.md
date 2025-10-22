@@ -4,9 +4,17 @@
 
 Crêperie Kinder 5 is a modern restaurant website for an authentic French crêperie with full e-commerce capabilities. The application allows customers to browse the menu, add items to a shopping cart, place orders with personal information, make reservations, and learn about the restaurant. Built as a full-stack web application, it features a React frontend with a Node.js/Express backend, utilizing PostgreSQL for data persistence.
 
-## Recent Changes (October 20, 2025)
+## Recent Changes
 
-**Shopping Cart & E-commerce**
+**October 22, 2025 - Social Authentication**
+- Implemented Supabase OAuth social login integration with Google, GitHub, and Facebook
+- Secure server-side token verification using Supabase Admin API
+- OAuth callback handler with proper access token validation
+- Social login buttons on login and signup pages
+- Automatic user creation/matching for OAuth users
+- Session management integration between Supabase and Express sessions
+
+**October 20, 2025 - Shopping Cart & E-commerce**
 - Full shopping cart system with persistent localStorage state management via CartContext
 - Add-to-cart buttons on all menu items with visual feedback (toast notifications)
 - Cart icon in navigation bar showing real-time item count
