@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SocialLoginButtons } from '@/components/social-login-buttons';
 
 export default function Signup() {
   const [, setLocation] = useLocation();
@@ -73,6 +74,7 @@ export default function Signup() {
                 {error}
               </div>
             )}
+            <SocialLoginButtons mode="signup" />
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <Input

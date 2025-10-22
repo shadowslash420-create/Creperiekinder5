@@ -18,6 +18,7 @@ const ReservationPage = lazy(() => import("@/pages/reservation"));
 const ContactPage = lazy(() => import("@/pages/contact"));
 const LoginPage = lazy(() => import("@/pages/login"));
 const SignupPage = lazy(() => import("@/pages/signup"));
+const AuthCallbackPage = lazy(() => import("@/pages/auth-callback"));
 const DashboardPage = lazy(() => import("@/pages/dashboard"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
@@ -42,6 +43,7 @@ function Router() {
         <Route path="/contact" component={ContactPage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignupPage} />
+        <Route path="/auth/callback" component={AuthCallbackPage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route component={NotFound} />
       </Switch>

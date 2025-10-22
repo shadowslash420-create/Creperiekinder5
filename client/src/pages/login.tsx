@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SocialLoginButtons } from '@/components/social-login-buttons';
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -46,6 +47,7 @@ export default function Login() {
                 {error}
               </div>
             )}
+            <SocialLoginButtons mode="login" />
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

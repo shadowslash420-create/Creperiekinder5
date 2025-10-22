@@ -1,6 +1,7 @@
 import { Router, type Request, type Response, type NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import { storage } from './storage';
+import { supabase } from './supabase';
 
 const router = Router();
 
@@ -108,6 +109,71 @@ router.get('/me', async (req: AuthRequest, res: Response) => {
   } catch (error) {
     console.error('Get user error:', error);
     res.status(500).json({ error: 'Failed to get user' });
+  }
+});
+
+// OAuth callback handler
+router.post('/oauth/callback', async (req: AuthRequest, res: Response) => {
+  try {
+    const { access_token } = req.body;
+
+    if (!access_token) {
+      return res.status(400).json({ error: 'Missing access token' });
+    }
+
+    if (!supabase) {
+      return res.status(500).json({ error: 'Supabase not configured' });
+    }
+
+    // Verify the access token with Supabase
+    const { data: { user: supabaseUser }, error: userError } = await supabase.auth.getUser(access_token);
+
+    if (userError || !supabaseUser) {
+      console.error('Supabase user verification failed:', userError);
+      return res.status(401).json({ error: 'Invalid access token' });
+    }
+
+    const email = supabaseUser.email;
+    const provider = supabaseUser.app_metadata?.provider || 'unknown';
+    const provider_id = supabaseUser.id;
+    const name = supabaseUser.user_metadata?.full_name || 
+                 supabaseUser.user_metadata?.name || 
+                 email?.split('@')[0] || 'User';
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email not provided by OAuth provider' });
+    }
+
+    // Check if user exists
+    let user = await storage.getUserByEmail(email);
+
+    if (!user) {
+      // Create new user for OAuth login
+      user = await storage.createUser({
+        email,
+        password: '', // No password for OAuth users
+        name,
+        phone: null,
+        role: 'client',
+      });
+      
+      console.log(`Created new user via ${provider} OAuth: ${email}`);
+    } else {
+      console.log(`Existing user logged in via ${provider} OAuth: ${email}`);
+    }
+
+    if (!user.active) {
+      return res.status(403).json({ error: 'Account is inactive' });
+    }
+
+    // Set session
+    req.session.userId = user.id;
+
+    const { password: _, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
+  } catch (error) {
+    console.error('OAuth callback error:', error);
+    res.status(500).json({ error: 'Failed to process OAuth login' });
   }
 });
 
