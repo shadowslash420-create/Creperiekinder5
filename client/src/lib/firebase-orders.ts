@@ -35,14 +35,16 @@ const ORDERS_COLLECTION = 'orders';
 
 export const createFirebaseOrder = async (orderData: Omit<FirebaseOrder, 'id' | 'createdAt' | 'updatedAt'>) => {
   try {
+    console.log('🔵 محاولة إنشاء طلب في Firebase...', orderData);
     const docRef = await addDoc(collection(db, ORDERS_COLLECTION), {
       ...orderData,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     });
+    console.log('✅ تم إنشاء الطلب بنجاح في Firebase! ID:', docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error('Error creating Firebase order:', error);
+    console.error('❌ خطأ في إنشاء طلب Firebase:', error);
     throw error;
   }
 };
