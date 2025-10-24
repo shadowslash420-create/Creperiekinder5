@@ -21,6 +21,7 @@ export const customerOrderSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   message: z.string().optional(),
   preferredTime: z.string().optional(),
+  deliveryAddress: z.string().optional(),
 });
 
 export type CustomerOrder = z.infer<typeof customerOrderSchema>;
