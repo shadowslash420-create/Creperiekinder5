@@ -122,7 +122,7 @@ export default function CheckoutPage() {
       const finalTotal = deliveryType === 'delivery' ? totalPrice + deliveryFee : totalPrice;
 
       // Create order in Firebase
-      const firebaseOrderData = {
+      const firebaseOrderData: any = {
         customerFirstName: data.firstName,
         customerLastName: data.lastName,
         customerEmail: data.email,
@@ -131,14 +131,29 @@ export default function CheckoutPage() {
         totalAmount: finalTotal.toString(),
         deliveryFee: deliveryType === 'delivery' ? deliveryFee.toString() : '0',
         deliveryType,
-        location: deliveryType === 'delivery' && data.deliveryAddress ? {
-          address: data.deliveryAddress,
-          coordinates: userLocation || undefined,
-        } : undefined,
-        notes: data.message,
-        preferredTime: data.preferredTime,
         status: 'pending' as const,
       };
+
+      // Only add location if delivery type is delivery AND address exists
+      if (deliveryType === 'delivery' && data.deliveryAddress) {
+        firebaseOrderData.location = {
+          address: data.deliveryAddress,
+        };
+        // Only add coordinates if they exist
+        if (userLocation) {
+          firebaseOrderData.location.coordinates = userLocation;
+        }
+      }
+
+      // Only add notes if they exist
+      if (data.message) {
+        firebaseOrderData.notes = data.message;
+      }
+
+      // Only add preferredTime if it exists
+      if (data.preferredTime) {
+        firebaseOrderData.preferredTime = data.preferredTime;
+      }
 
       await createFirebaseOrder(firebaseOrderData);
 
