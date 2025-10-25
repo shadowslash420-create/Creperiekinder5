@@ -243,6 +243,7 @@ export function ReservationSection() {
                           className="resize-none"
                           rows={3}
                           {...field}
+                          value={field.value || ""}
                           data-testid="input-special-requests"
                         />
                       </FormControl>
