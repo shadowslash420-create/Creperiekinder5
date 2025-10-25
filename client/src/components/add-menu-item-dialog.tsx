@@ -40,7 +40,7 @@ export function AddMenuItemDialog({ onSuccess }: { onSuccess: () => void }) {
     name: '',
     description: '',
     price: '',
-    deliveryFee: '0',
+    deliveryFee: '',
     categoryId: '',
     available: true,
     popular: false,
@@ -75,7 +75,7 @@ export function AddMenuItemDialog({ onSuccess }: { onSuccess: () => void }) {
       formDataToSend.append('name', formData.name);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('price', formData.price);
-      formDataToSend.append('deliveryFee', formData.deliveryFee);
+      formDataToSend.append('deliveryFee', formData.deliveryFee || '0');
       formDataToSend.append('categoryId', formData.categoryId);
       formDataToSend.append('available', formData.available.toString());
       formDataToSend.append('popular', formData.popular.toString());
@@ -123,7 +123,7 @@ export function AddMenuItemDialog({ onSuccess }: { onSuccess: () => void }) {
       name: '',
       description: '',
       price: '',
-      deliveryFee: '0',
+      deliveryFee: '',
       categoryId: '',
       available: true,
       popular: false,
