@@ -1,7 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // Get Supabase credentials from backend config endpoint
-let supabaseClient: ReturnType<typeof createClient> | null = null;
+let supabaseClient: SupabaseClient | null = null;
 
 export async function getSupabaseClient() {
   if (supabaseClient) {
@@ -13,15 +13,15 @@ export async function getSupabaseClient() {
     const config = await response.json();
     
     if (!config.supabaseUrl || !config.supabaseAnonKey) {
-      console.error('Missing Supabase configuration from server');
-      throw new Error('Supabase configuration not available');
+      console.warn('Supabase configuration not available - social login disabled');
+      return null;
     }
 
     supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey);
     return supabaseClient;
   } catch (error) {
-    console.error('Failed to initialize Supabase client:', error);
-    throw error;
+    console.warn('Failed to initialize Supabase client - social login disabled:', error);
+    return null;
   }
 }
 

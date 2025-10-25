@@ -1,8 +1,41 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertReservationSchema, insertOrderSchema } from "@shared/schema";
+import { insertReservationSchema, insertOrderSchema, insertMenuItemSchema } from "@shared/schema";
 import authRouter, { requireAuth, requireRole } from "./auth";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configure multer for image uploads
+const imageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '..', 'attached_assets', 'menu_images'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'menu-item-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage: imageStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: function (req, file, cb) {
+    const allowedTypes = /jpeg|jpg|png|gif|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'));
+    }
+  }
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
@@ -48,6 +81,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching menu item:", error);
       res.status(500).json({ error: "Failed to fetch menu item" });
+    }
+  });
+
+  app.post("/api/menu-items", requireRole("owner"), upload.single('image'), async (req, res) => {
+    try {
+      const file = req.file;
+      const imageUrl = file ? `/attached_assets/menu_images/${file.filename}` : null;
+
+      const validatedData = insertMenuItemSchema.parse({
+        ...req.body,
+        imageUrl,
+      });
+
+      const menuItem = await storage.createMenuItem(validatedData);
+      res.status(201).json(menuItem);
+    } catch (error: any) {
+      console.error("Error creating menu item:", error);
+      if (error.name === "ZodError") {
+        return res.status(400).json({ error: "Invalid menu item data", details: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create menu item" });
+    }
+  });
+
+  app.patch("/api/menu-items/:id", requireRole("owner"), upload.single('image'), async (req, res) => {
+    try {
+      const updates: any = { ...req.body };
+      
+      if (req.file) {
+        updates.imageUrl = `/attached_assets/menu_images/${req.file.filename}`;
+      }
+
+      const updatedItem = await storage.updateMenuItem(req.params.id, updates);
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Menu item not found" });
+      }
+      res.json(updatedItem);
+    } catch (error) {
+      console.error("Error updating menu item:", error);
+      res.status(500).json({ error: "Failed to update menu item" });
     }
   });
 

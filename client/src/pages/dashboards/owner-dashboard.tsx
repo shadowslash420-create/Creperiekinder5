@@ -4,6 +4,7 @@ import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { AddMenuItemDialog } from '@/components/add-menu-item-dialog';
 import { useState, useEffect } from 'react';
 
 interface Order {
@@ -14,11 +15,24 @@ interface Order {
   createdAt: Date;
 }
 
+interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  deliveryFee: string;
+  categoryId: string;
+  imageUrl: string | null;
+  available: boolean;
+  popular: boolean;
+}
+
 export default function OwnerDashboard() {
   const { user, logout } = useAuth();
   const [, setLocation] = useLocation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,9 +41,10 @@ export default function OwnerDashboard() {
 
   const fetchData = async () => {
     try {
-      const [ordersRes, usersRes] = await Promise.all([
+      const [ordersRes, usersRes, menuItemsRes] = await Promise.all([
         fetch('/api/orders', { credentials: 'include' }),
         fetch('/api/users', { credentials: 'include' }),
+        fetch('/api/menu-items'),
       ]);
 
       if (ordersRes.ok) {
@@ -40,6 +55,11 @@ export default function OwnerDashboard() {
       if (usersRes.ok) {
         const usersData = await usersRes.json();
         setUsers(usersData);
+      }
+
+      if (menuItemsRes.ok) {
+        const menuItemsData = await menuItemsRes.json();
+        setMenuItems(menuItemsData);
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -161,6 +181,87 @@ export default function OwnerDashboard() {
                     )}
                   </div>
                 ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="mb-8">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Menu Items Management</CardTitle>
+              <CardDescription>Manage your restaurant menu items</CardDescription>
+            </div>
+            <AddMenuItemDialog onSuccess={fetchData} />
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <p className="text-center text-muted-foreground">Loading...</p>
+            ) : menuItems.length === 0 ? (
+              <p className="text-center text-muted-foreground">No menu items yet</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2">Image</th>
+                      <th className="text-left p-2">Name</th>
+                      <th className="text-left p-2">Price</th>
+                      <th className="text-left p-2">Delivery Fee</th>
+                      <th className="text-left p-2">Category</th>
+                      <th className="text-left p-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {menuItems.map((item) => (
+                      <tr key={item.id} className="border-b">
+                        <td className="p-2">
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="w-12 h-12 object-cover rounded"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs text-muted-foreground">
+                              No img
+                            </div>
+                          )}
+                        </td>
+                        <td className="p-2">
+                          <div>
+                            <p className="font-medium">{item.name}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-1">
+                              {item.description}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="p-2">{item.price} DT</td>
+                        <td className="p-2">{item.deliveryFee} DT</td>
+                        <td className="p-2 capitalize">{item.categoryId}</td>
+                        <td className="p-2">
+                          <div className="flex gap-1">
+                            {item.available && (
+                              <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                                Available
+                              </span>
+                            )}
+                            {item.popular && (
+                              <span className="px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-800">
+                                Popular
+                              </span>
+                            )}
+                            {!item.available && (
+                              <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-800">
+                                Unavailable
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </CardContent>

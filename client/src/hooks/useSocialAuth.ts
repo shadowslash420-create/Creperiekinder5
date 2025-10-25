@@ -13,6 +13,10 @@ export function useSocialAuth() {
     try {
       const supabase = await getSupabaseClient();
       
+      if (!supabase) {
+        throw new Error('Social login is not available. Please configure Supabase credentials.');
+      }
+      
       // Get the current window location for redirect
       const redirectUrl = `${window.location.origin}/auth/callback`;
       

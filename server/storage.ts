@@ -241,12 +241,13 @@ export class MemStorage implements IStorage {
         name: item.name,
         description: item.description,
         price: item.price,
+        deliveryFee: "0",
         categoryId: item.categoryId,
         imageUrl: item.imageUrl ?? null,
         available: item.available,
         popular: item.popular,
       };
-      this.menuItems.set(menuItem.id, item);
+      this.menuItems.set(menuItem.id, menuItem);
     });
   }
 
@@ -280,7 +281,8 @@ export class MemStorage implements IStorage {
       id,
       name: insertItem.name,
       description: insertItem.description,
-      price: insertItem.price,
+      price: typeof insertItem.price === 'number' ? insertItem.price.toString() : insertItem.price,
+      deliveryFee: typeof insertItem.deliveryFee === 'number' ? insertItem.deliveryFee.toString() : (insertItem.deliveryFee ?? "0"),
       categoryId: insertItem.categoryId,
       imageUrl: insertItem.imageUrl ?? null,
       available: insertItem.available ?? true,
@@ -294,7 +296,17 @@ export class MemStorage implements IStorage {
     const item = this.menuItems.get(id);
     if (!item) return undefined;
 
-    const updatedItem = { ...item, ...updates };
+    const normalizedUpdates: Partial<MenuItem> = {
+      ...updates,
+      price: updates.price !== undefined 
+        ? (typeof updates.price === 'number' ? updates.price.toString() : updates.price)
+        : undefined,
+      deliveryFee: updates.deliveryFee !== undefined
+        ? (typeof updates.deliveryFee === 'number' ? updates.deliveryFee.toString() : updates.deliveryFee)
+        : undefined,
+    };
+
+    const updatedItem = { ...item, ...normalizedUpdates };
     this.menuItems.set(id, updatedItem);
     return updatedItem;
   }

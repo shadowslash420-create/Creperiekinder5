@@ -49,6 +49,7 @@ export const menuItems = pgTable("menu_items", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  deliveryFee: decimal("delivery_fee", { precision: 10, scale: 2 }).notNull().default("0"),
   categoryId: varchar("category_id").notNull().references(() => categories.id),
   imageUrl: text("image_url"),
   available: boolean("available").notNull().default(true),
@@ -57,6 +58,11 @@ export const menuItems = pgTable("menu_items", {
 
 export const insertMenuItemSchema = createInsertSchema(menuItems).omit({
   id: true,
+}).extend({
+  price: z.coerce.number().positive("Price must be greater than 0"),
+  deliveryFee: z.coerce.number().min(0, "Delivery fee cannot be negative").default(0),
+  available: z.coerce.boolean().default(true),
+  popular: z.coerce.boolean().default(false),
 });
 
 export type InsertMenuItem = z.infer<typeof insertMenuItemSchema>;
