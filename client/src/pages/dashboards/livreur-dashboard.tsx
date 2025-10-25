@@ -1,58 +1,33 @@
+
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { useLocation } from 'wouter';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState, useEffect } from 'react';
-
-interface Order {
-  id: string;
-  customerName: string;
-  customerPhone: string;
-  deliveryAddress: string | null;
-  status: string;
-  totalAmount: string;
-  items: string;
-  createdAt: Date;
-}
+import { Badge } from '@/components/ui/badge';
+import { subscribeToOrders, updateFirebaseOrderStatus, type FirebaseOrder } from '@/lib/firebase-orders';
+import { CheckCircle2, Package, MapPin, Phone, Mail, User, Clock } from 'lucide-react';
 
 export default function LivreurDashboard() {
   const { user, logout } = useAuth();
   const [, setLocation] = useLocation();
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<FirebaseOrder[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchOrders();
+    const unsubscribe = subscribeToOrders((newOrders) => {
+      setOrders(newOrders);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const fetchOrders = async () => {
+  const handleOrderAction = async (orderId: string, status: FirebaseOrder['status']) => {
     try {
-      const response = await fetch('/api/orders', { credentials: 'include' });
-      if (response.ok) {
-        const data = await response.json();
-        setOrders(data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch orders:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOrderAction = async (orderId: string, status: string) => {
-    try {
-      const response = await fetch(`/api/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        fetchOrders();
-      }
+      await updateFirebaseOrderStatus(orderId, status);
     } catch (error) {
       console.error('Failed to update order:', error);
     }
@@ -64,7 +39,8 @@ export default function LivreurDashboard() {
   };
 
   const pendingOrders = orders.filter(o => o.status === 'pending');
-  const myOrders = orders.filter(o => o.status !== 'pending' && o.status !== 'refused');
+  const confirmedOrders = orders.filter(o => o.status === 'confirmed');
+  const myDeliveries = orders.filter(o => o.status === 'confirmed' || o.status === 'delivered');
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,138 +48,190 @@ export default function LivreurDashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Delivery Dashboard</h1>
+            <h1 className="text-3xl font-bold">Delivery Dashboard - Live Orders</h1>
             <p className="text-muted-foreground">Welcome, {user?.name}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline" className="mt-4">Logout</Button>
+          <Button onClick={handleLogout} variant="outline">Logout</Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">{pendingOrders.length}</CardTitle>
-              <CardDescription>Pending Orders</CardDescription>
+              <CardDescription>Available for Pickup</CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">{myOrders.length}</CardTitle>
-              <CardDescription>My Deliveries</CardDescription>
+              <CardTitle className="text-2xl">{confirmedOrders.length}</CardTitle>
+              <CardDescription>Active Deliveries</CardDescription>
             </CardHeader>
           </Card>
         </div>
 
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Pending Orders</CardTitle>
-            <CardDescription>New orders waiting for your confirmation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <p className="text-center text-muted-foreground">Loading...</p>
-            ) : pendingOrders.length === 0 ? (
-              <p className="text-center text-muted-foreground">No pending orders</p>
-            ) : (
-              <div className="space-y-4">
-                {pendingOrders.map((order) => (
-                  <div key={order.id} className="border rounded-lg p-4 bg-yellow-50">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex-1">
-                        <p className="font-bold text-lg">{order.customerName}</p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          📞 {order.customerPhone}
-                        </p>
-                        {order.deliveryAddress && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            📍 {order.deliveryAddress}
-                          </p>
-                        )}
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Type: <span className="font-medium">{order.orderType}</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Ordered: {new Date(order.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      <p className="font-bold text-xl">{order.totalAmount} DT</p>
-                    </div>
-                    <div className="flex gap-2 mt-4">
-                      <Button 
-                        onClick={() => handleOrderAction(order.id, 'confirmed')}
-                        className="flex-1 bg-green-600 hover:bg-green-700"
-                      >
-                        Accept & Deliver
-                      </Button>
-                      <Button 
-                        onClick={() => handleOrderAction(order.id, 'refused')}
-                        variant="destructive"
-                        className="flex-1"
-                      >
-                        Decline
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Available Orders */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Available Orders</CardTitle>
+              <CardDescription>Orders ready for delivery</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <p className="text-center text-muted-foreground">Loading orders...</p>
+              ) : pendingOrders.length === 0 ? (
+                <p className="text-center text-muted-foreground">No pending orders</p>
+              ) : (
+                <div className="space-y-4">
+                  {pendingOrders.map((order) => (
+                    <Card key={order.id} className="border-yellow-300 bg-yellow-50/50">
+                      <CardContent className="p-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-muted-foreground" />
+                            <p className="font-bold">
+                              {order.customerFirstName} {order.customerLastName}
+                            </p>
+                          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>My Deliveries</CardTitle>
-            <CardDescription>Orders you've accepted for delivery</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {myOrders.length === 0 ? (
-              <p className="text-center text-muted-foreground">No confirmed deliveries yet</p>
-            ) : (
-              <div className="space-y-4">
-                {myOrders.map((order) => (
-                  <div key={order.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <p className="font-bold">{order.customerName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          📞 {order.customerPhone}
-                        </p>
-                        {order.deliveryAddress && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            📍 {order.deliveryAddress}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {new Date(order.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-lg">{order.totalAmount} DT</p>
-                        <span className={`text-xs px-2 py-1 rounded mt-1 inline-block ${
-                          order.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                          order.status === 'delivered' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {order.status}
-                        </span>
-                      </div>
-                    </div>
-                    {order.status === 'confirmed' && (
-                      <div className="mt-3">
-                        <Button 
-                          onClick={() => handleOrderAction(order.id, 'delivered')}
-                          className="w-full"
-                          size="sm"
-                        >
-                          Mark as Delivered
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                          <div className="flex items-center gap-2 text-sm">
+                            <Phone className="w-4 h-4 text-muted-foreground" />
+                            <p>{order.customerPhone}</p>
+                          </div>
+
+                          {order.location && (
+                            <div className="flex items-start gap-2 text-sm">
+                              <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground" />
+                              <p className="flex-1">{order.location.address}</p>
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-2 text-sm">
+                            <Package className="w-4 h-4 text-muted-foreground" />
+                            <p className="capitalize">{order.deliveryType}</p>
+                          </div>
+
+                          {order.preferredTime && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Clock className="w-4 h-4 text-muted-foreground" />
+                              <p>Preferred time: {order.preferredTime}</p>
+                            </div>
+                          )}
+
+                          <div className="pt-2">
+                            <p className="font-bold text-lg text-primary">
+                              {order.totalAmount} DZD
+                            </p>
+                          </div>
+
+                          <div className="border-t pt-3 space-y-1">
+                            <p className="font-semibold text-sm">Items:</p>
+                            {order.items.map((item, idx) => (
+                              <p key={idx} className="text-sm text-muted-foreground">
+                                {item.quantity}x {item.name} - {item.price} DZD
+                              </p>
+                            ))}
+                          </div>
+
+                          {order.notes && (
+                            <div className="border-t pt-3">
+                              <p className="text-sm font-semibold">Notes:</p>
+                              <p className="text-sm text-muted-foreground">{order.notes}</p>
+                            </div>
+                          )}
+
+                          <Button
+                            onClick={() => handleOrderAction(order.id!, 'confirmed')}
+                            className="w-full mt-3"
+                          >
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            Accept Delivery
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* My Deliveries */}
+          <Card>
+            <CardHeader>
+              <CardTitle>My Deliveries</CardTitle>
+              <CardDescription>Orders you've accepted for delivery</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {myDeliveries.length === 0 ? (
+                <p className="text-center text-muted-foreground">No confirmed deliveries yet</p>
+              ) : (
+                <div className="space-y-4">
+                  {myDeliveries.map((order) => (
+                    <Card key={order.id} className={
+                      order.status === 'delivered' ? 'border-blue-300 bg-blue-50/50' : 'border-green-300 bg-green-50/50'
+                    }>
+                      <CardContent className="p-4">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-start">
+                            <div className="flex items-center gap-2">
+                              <User className="w-4 h-4 text-muted-foreground" />
+                              <p className="font-bold">
+                                {order.customerFirstName} {order.customerLastName}
+                              </p>
+                            </div>
+                            <Badge className={
+                              order.status === 'delivered' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                            }>
+                              {order.status}
+                            </Badge>
+                          </div>
+
+                          <div className="flex items-center gap-2 text-sm">
+                            <Phone className="w-4 h-4 text-muted-foreground" />
+                            <p>{order.customerPhone}</p>
+                          </div>
+
+                          {order.location && (
+                            <div className="flex items-start gap-2 text-sm">
+                              <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground" />
+                              <p className="flex-1">{order.location.address}</p>
+                            </div>
+                          )}
+
+                          <div className="pt-2">
+                            <p className="font-bold text-lg text-primary">
+                              {order.totalAmount} DZD
+                            </p>
+                          </div>
+
+                          <div className="border-t pt-3 space-y-1">
+                            <p className="font-semibold text-sm">Items:</p>
+                            {order.items.map((item, idx) => (
+                              <p key={idx} className="text-sm text-muted-foreground">
+                                {item.quantity}x {item.name}
+                              </p>
+                            ))}
+                          </div>
+
+                          {order.status === 'confirmed' && (
+                            <Button
+                              onClick={() => handleOrderAction(order.id!, 'delivered')}
+                              className="w-full mt-3"
+                            >
+                              <CheckCircle2 className="w-4 h-4 mr-2" />
+                              Mark as Delivered
+                            </Button>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </main>
       <Footer />
     </div>
