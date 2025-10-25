@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AddMenuItemDialog } from '@/components/add-menu-item-dialog';
 import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { UserPlus } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface Order {
   id: string;
@@ -34,6 +40,15 @@ export default function OwnerDashboard() {
   const [users, setUsers] = useState<any[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [staffDialogOpen, setStaffDialogOpen] = useState(false);
+  const [staffForm, setStaffForm] = useState({
+    email: '',
+    password: '',
+    name: '',
+    phone: '',
+    role: 'livreur' as 'livreur' | 'owner'
+  });
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchData();
@@ -88,6 +103,55 @@ export default function OwnerDashboard() {
   const handleLogout = async () => {
     await logout();
     setLocation('/');
+  };
+
+  const createStaffUser = async () => {
+    try {
+      if (!staffForm.email || !staffForm.password || !staffForm.name) {
+        toast({
+          title: "Error",
+          description: "Please fill in all required fields",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const response = await fetch('/api/users/create-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(staffForm)
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: `${staffForm.role === 'owner' ? 'Admin' : 'Delivery person'} created successfully`
+        });
+        setStaffDialogOpen(false);
+        setStaffForm({
+          email: '',
+          password: '',
+          name: '',
+          phone: '',
+          role: 'livreur'
+        });
+        fetchData();
+      } else {
+        const data = await response.json();
+        toast({
+          title: "Error",
+          description: data.error || "Failed to create user",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create user",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -268,9 +332,88 @@ export default function OwnerDashboard() {
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle>User Management</CardTitle>
-            <CardDescription>All registered users</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>User Management</CardTitle>
+              <CardDescription>All registered users</CardDescription>
+            </div>
+            <Dialog open={staffDialogOpen} onOpenChange={setStaffDialogOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Add Staff
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create Staff Account</DialogTitle>
+                  <DialogDescription>
+                    Add a new delivery person or admin to the system
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="staff-role">Role *</Label>
+                    <Select 
+                      value={staffForm.role} 
+                      onValueChange={(value: 'livreur' | 'owner') => 
+                        setStaffForm({...staffForm, role: value})
+                      }
+                    >
+                      <SelectTrigger id="staff-role">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="livreur">Delivery Person</SelectItem>
+                        <SelectItem value="owner">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="staff-name">Name *</Label>
+                    <Input 
+                      id="staff-name"
+                      value={staffForm.name}
+                      onChange={(e) => setStaffForm({...staffForm, name: e.target.value})}
+                      placeholder="Full name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="staff-email">Email *</Label>
+                    <Input 
+                      id="staff-email"
+                      type="email"
+                      value={staffForm.email}
+                      onChange={(e) => setStaffForm({...staffForm, email: e.target.value})}
+                      placeholder="email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="staff-password">Password *</Label>
+                    <Input 
+                      id="staff-password"
+                      type="password"
+                      value={staffForm.password}
+                      onChange={(e) => setStaffForm({...staffForm, password: e.target.value})}
+                      placeholder="Minimum 6 characters"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="staff-phone">Phone</Label>
+                    <Input 
+                      id="staff-phone"
+                      type="tel"
+                      value={staffForm.phone}
+                      onChange={(e) => setStaffForm({...staffForm, phone: e.target.value})}
+                      placeholder="+213 555 000 000"
+                    />
+                  </div>
+                  <Button onClick={createStaffUser} className="w-full">
+                    Create {staffForm.role === 'owner' ? 'Admin' : 'Delivery Person'}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </CardHeader>
           <CardContent>
             {loading ? (
