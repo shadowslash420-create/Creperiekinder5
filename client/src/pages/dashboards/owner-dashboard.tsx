@@ -9,8 +9,10 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, Trash2, Edit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Order {
@@ -48,6 +50,19 @@ export default function OwnerDashboard() {
     phone: '',
     role: 'livreur' as 'livreur' | 'owner'
   });
+  const [categories, setCategories] = useState<any[]>([]);
+  const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: '',
+    description: '',
+    price: '',
+    deliveryFee: '',
+    categoryId: '',
+    available: true,
+    popular: false,
+  });
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -56,10 +71,11 @@ export default function OwnerDashboard() {
 
   const fetchData = async () => {
     try {
-      const [ordersRes, usersRes, menuItemsRes] = await Promise.all([
+      const [ordersRes, usersRes, menuItemsRes, categoriesRes] = await Promise.all([
         fetch('/api/orders', { credentials: 'include' }),
         fetch('/api/users', { credentials: 'include' }),
         fetch('/api/menu-items'),
+        fetch('/api/categories'),
       ]);
 
       if (ordersRes.ok) {
@@ -75,6 +91,11 @@ export default function OwnerDashboard() {
       if (menuItemsRes.ok) {
         const menuItemsData = await menuItemsRes.json();
         setMenuItems(menuItemsData);
+      }
+
+      if (categoriesRes.ok) {
+        const categoriesData = await categoriesRes.json();
+        setCategories(categoriesData);
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -103,6 +124,101 @@ export default function OwnerDashboard() {
   const handleLogout = async () => {
     await logout();
     setLocation('/');
+  };
+
+  const handleDeleteItem = async (itemId: string, itemName: string) => {
+    if (!confirm(`Are you sure you want to delete "${itemName}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/menu-items/${itemId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Menu item deleted successfully"
+        });
+        fetchData();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to delete menu item",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete menu item",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleEditItem = (item: MenuItem) => {
+    setEditingItem(item);
+    setEditForm({
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      deliveryFee: item.deliveryFee,
+      categoryId: item.categoryId,
+      available: item.available,
+      popular: item.popular,
+    });
+    setEditImageFile(null);
+    setEditDialogOpen(true);
+  };
+
+  const handleUpdateItem = async () => {
+    if (!editingItem) return;
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', editForm.name);
+      formDataToSend.append('description', editForm.description);
+      formDataToSend.append('price', editForm.price);
+      formDataToSend.append('deliveryFee', editForm.deliveryFee);
+      formDataToSend.append('categoryId', editForm.categoryId);
+      formDataToSend.append('available', editForm.available.toString());
+      formDataToSend.append('popular', editForm.popular.toString());
+      
+      if (editImageFile) {
+        formDataToSend.append('image', editImageFile);
+      }
+
+      const response = await fetch(`/api/menu-items/${editingItem.id}`, {
+        method: 'PATCH',
+        body: formDataToSend,
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Menu item updated successfully"
+        });
+        setEditDialogOpen(false);
+        setEditingItem(null);
+        fetchData();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update menu item",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update menu item",
+        variant: "destructive"
+      });
+    }
   };
 
   const createStaffUser = async () => {
@@ -274,11 +390,12 @@ export default function OwnerDashboard() {
                       <th className="text-left p-2">Delivery Fee</th>
                       <th className="text-left p-2">Category</th>
                       <th className="text-left p-2">Status</th>
+                      <th className="text-left p-2">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {menuItems.map((item) => (
-                      <tr key={item.id} className="border-b">
+                      <tr key={item.id} className="border-b hover:bg-muted/50 transition-colors">
                         <td className="p-2">
                           {item.imageUrl ? (
                             <img
@@ -304,7 +421,7 @@ export default function OwnerDashboard() {
                         <td className="p-2">{item.deliveryFee} DT</td>
                         <td className="p-2 capitalize">{item.categoryId}</td>
                         <td className="p-2">
-                          <div className="flex gap-1">
+                          <div className="flex gap-1 flex-wrap">
                             {item.available && (
                               <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
                                 Available
@@ -320,6 +437,24 @@ export default function OwnerDashboard() {
                                 Unavailable
                               </span>
                             )}
+                          </div>
+                        </td>
+                        <td className="p-2">
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditItem(item)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeleteItem(item.id, item.name)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </td>
                       </tr>
@@ -460,6 +595,153 @@ export default function OwnerDashboard() {
             )}
           </CardContent>
         </Card>
+
+        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Menu Item</DialogTitle>
+              <DialogDescription>
+                Update the menu item details
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-name">Item Name *</Label>
+                  <Input
+                    id="edit-name"
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="edit-category">Category *</Label>
+                  <Select
+                    value={editForm.categoryId}
+                    onValueChange={(value) => setEditForm({ ...editForm, categoryId: value })}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-description">Description *</Label>
+                <Textarea
+                  id="edit-description"
+                  value={editForm.description}
+                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                  required
+                  rows={3}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-price">Price (DT) *</Label>
+                  <Input
+                    id="edit-price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={editForm.price}
+                    onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="edit-deliveryFee">Delivery Fee (DT)</Label>
+                  <Input
+                    id="edit-deliveryFee"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={editForm.deliveryFee}
+                    onChange={(e) => setEditForm({ ...editForm, deliveryFee: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-image">Item Image</Label>
+                {editingItem?.imageUrl && (
+                  <div className="mb-2">
+                    <img
+                      src={editingItem.imageUrl}
+                      alt="Current"
+                      className="w-32 h-32 object-cover rounded"
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">Current image</p>
+                  </div>
+                )}
+                <Input
+                  id="edit-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setEditImageFile(e.target.files?.[0] || null)}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Upload a new image to replace the current one (JPG, PNG, GIF, WEBP - Max 5MB)
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="edit-available"
+                    checked={editForm.available}
+                    onCheckedChange={(checked) =>
+                      setEditForm({ ...editForm, available: checked as boolean })
+                    }
+                  />
+                  <Label htmlFor="edit-available" className="font-normal cursor-pointer">
+                    Available for order
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="edit-popular"
+                    checked={editForm.popular}
+                    onCheckedChange={(checked) =>
+                      setEditForm({ ...editForm, popular: checked as boolean })
+                    }
+                  />
+                  <Label htmlFor="edit-popular" className="font-normal cursor-pointer">
+                    Mark as popular item
+                  </Label>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditDialogOpen(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateItem} className="flex-1">
+                  Update Item
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </main>
       <Footer />
     </div>

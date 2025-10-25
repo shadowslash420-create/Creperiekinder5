@@ -272,6 +272,14 @@ export class MemStorage implements IStorage {
     return item;
   }
 
+  async deleteMenuItem(id: string): Promise<boolean> {
+    const item = this.menuItems.get(id);
+    if (!item) return false;
+    
+    this.menuItems.delete(id);
+    return true;
+  }
+
   async updateMenuItem(id: string, updates: Partial<InsertMenuItem>): Promise<MenuItem | undefined> {
     const item = this.menuItems.get(id);
     if (!item) return undefined;
