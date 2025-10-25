@@ -1,45 +1,59 @@
+
 import { useState } from 'react';
-import { getSupabaseClient } from '@/lib/supabase';
-import type { Provider } from '@supabase/supabase-js';
+import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 export function useSocialAuth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const signInWithProvider = async (provider: Provider) => {
+  const signInWithProvider = async (provider: 'google' | 'facebook') => {
+    if (provider !== 'google') {
+      setError('Only Google sign-in is currently supported');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const supabase = await getSupabaseClient();
+      const googleProvider = new GoogleAuthProvider();
+      googleProvider.addScope('profile');
+      googleProvider.addScope('email');
       
-      if (!supabase) {
-        throw new Error('Social login is not available. Please configure Supabase credentials.');
-      }
+      // Use popup for better UX
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
       
-      // Get the current window location for redirect
-      const redirectUrl = `${window.location.origin}/auth/callback`;
+      // Get the ID token to send to backend
+      const idToken = await user.getIdToken();
       
-      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+      // Send to backend for session creation
+      const response = await fetch('/api/auth/firebase-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
+        body: JSON.stringify({
+          idToken,
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+        }),
       });
 
-      if (signInError) {
-        throw signInError;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to authenticate with backend');
       }
 
-      // Browser will redirect to OAuth provider
-      return data;
+      const userData = await response.json();
+      setLoading(false);
+      return userData;
     } catch (err: any) {
-      console.error('Social auth error:', err);
-      setError(err.message || 'Failed to sign in with provider');
+      console.error('Firebase auth error:', err);
+      setError(err.message || 'Failed to sign in with Google');
       setLoading(false);
       throw err;
     }

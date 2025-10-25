@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSocialAuth } from '@/hooks/useSocialAuth';
-import type { Provider } from '@supabase/supabase-js';
+
+type Provider = 'google' | 'facebook';
 
 interface SocialLoginButtonsProps {
   mode?: 'login' | 'signup';
@@ -15,6 +16,8 @@ export function SocialLoginButtons({ mode = 'login' }: SocialLoginButtonsProps) 
     setActiveProvider(provider);
     try {
       await signInWithProvider(provider);
+      // Redirect to dashboard on success
+      window.location.href = '/dashboard';
     } catch (error) {
       console.error(`${provider} login error:`, error);
       setActiveProvider(null);

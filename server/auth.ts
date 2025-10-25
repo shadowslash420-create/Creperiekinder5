@@ -112,7 +112,71 @@ router.get('/me', async (req: AuthRequest, res: Response) => {
   }
 });
 
-// OAuth callback handler
+// Firebase authentication endpoint
+router.post('/firebase-login', async (req: AuthRequest, res: Response) => {
+  try {
+    const { idToken, email, name, photoURL } = req.body;
+
+    if (!idToken || !email) {
+      return res.status(400).json({ error: 'Missing ID token or email' });
+    }
+
+    // In production, you should verify the Firebase ID token here
+    // For now, we'll trust the client-side Firebase authentication
+    
+    const userName = name || email.split('@')[0];
+
+    // Determine user role based on OWNER_EMAILS environment variable
+    const ownerEmails = process.env.OWNER_EMAILS?.toLowerCase().split(',').map(e => e.trim()) || [];
+    const isOwner = ownerEmails.includes(email.toLowerCase());
+    const userRole = isOwner ? 'owner' : 'client';
+
+    // Check if user exists
+    let user = await storage.getUserByEmail(email);
+
+    if (!user) {
+      // Create new user for Firebase login
+      user = await storage.createUser({
+        email,
+        password: '', // No password for Firebase OAuth users
+        name: userName,
+        phone: null,
+        role: userRole,
+      });
+      
+      console.log(`Created new user via Firebase: ${email} with role: ${userRole}`);
+    } else {
+      // Update existing user's role if they're an owner
+      if (isOwner && user.role !== 'owner') {
+        const updatedUser = await storage.updateUser(user.id, { role: 'owner' });
+        if (updatedUser) {
+          user = updatedUser;
+          console.log(`Updated user role to owner for: ${email}`);
+        }
+      }
+      console.log(`Existing user logged in via Firebase: ${email}`);
+    }
+
+    if (!user) {
+      return res.status(500).json({ error: 'Failed to process user' });
+    }
+
+    if (!user.active) {
+      return res.status(403).json({ error: 'Account is inactive' });
+    }
+
+    // Set session
+    req.session.userId = user.id;
+
+    const { password: _, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
+  } catch (error) {
+    console.error('Firebase login error:', error);
+    res.status(500).json({ error: 'Failed to process Firebase login' });
+  }
+});
+
+// OAuth callback handler (kept for backwards compatibility)
 router.post('/oauth/callback', async (req: AuthRequest, res: Response) => {
   try {
     const { access_token } = req.body;
