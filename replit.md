@@ -6,6 +6,12 @@ Crêperie Kinder 5 is a modern restaurant website for an authentic French crêpe
 
 ## Recent Changes
 
+**October 25, 2025 - Owner Email Authorization**
+- Configured automatic owner role assignment via OWNER_EMAILS environment variable
+- Designated emails (Crepriekinder5@gmail.com, oussamaanis2005@gmail.com) receive owner role on Google OAuth login
+- Existing users are automatically upgraded to owner role if their email is in the authorized list
+- New users from authorized emails are created with owner role directly
+
 **October 22, 2025 - Social Authentication**
 - Implemented Supabase OAuth social login integration with Google, GitHub, and Facebook
 - Secure server-side token verification using Supabase Admin API
@@ -170,4 +176,5 @@ Preferred communication style: Simple, everyday language.
 - `DATABASE_URL` - PostgreSQL connection string (Neon)
 - `SUPABASE_URL` - Supabase project URL (optional)
 - `SUPABASE_ANON_KEY` - Supabase anonymous key (optional)
+- `OWNER_EMAILS` - Comma-separated list of email addresses that should receive owner role (e.g., "email1@example.com,email2@example.com")
 - `NODE_ENV` - Environment mode (development/production)

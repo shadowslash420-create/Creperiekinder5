@@ -144,6 +144,11 @@ router.post('/oauth/callback', async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Email not provided by OAuth provider' });
     }
 
+    // Determine user role based on OWNER_EMAILS environment variable
+    const ownerEmails = process.env.OWNER_EMAILS?.toLowerCase().split(',').map(e => e.trim()) || [];
+    const isOwner = ownerEmails.includes(email.toLowerCase());
+    const userRole = isOwner ? 'owner' : 'client';
+
     // Check if user exists
     let user = await storage.getUserByEmail(email);
 
@@ -154,12 +159,24 @@ router.post('/oauth/callback', async (req: AuthRequest, res: Response) => {
         password: '', // No password for OAuth users
         name,
         phone: null,
-        role: 'client',
+        role: userRole,
       });
       
-      console.log(`Created new user via ${provider} OAuth: ${email}`);
+      console.log(`Created new user via ${provider} OAuth: ${email} with role: ${userRole}`);
     } else {
+      // Update existing user's role if they're an owner
+      if (isOwner && user.role !== 'owner') {
+        const updatedUser = await storage.updateUser(user.id, { role: 'owner' });
+        if (updatedUser) {
+          user = updatedUser;
+          console.log(`Updated user role to owner for: ${email}`);
+        }
+      }
       console.log(`Existing user logged in via ${provider} OAuth: ${email}`);
+    }
+
+    if (!user) {
+      return res.status(500).json({ error: 'Failed to process user' });
     }
 
     if (!user.active) {
