@@ -77,33 +77,13 @@ export class MemStorage implements IStorage {
         role: 'client' as const,
         active: true,
         createdAt: new Date(),
-      },
-      {
-        id: 2,
-        email: 'owner@kinder.com',
-        password: bcrypt.hashSync('bmw m5 competition nchlh', 10),
-        name: 'Restaurant Owner',
-        phone: '+213 555 000 001',
-        role: 'owner' as const,
-        active: true,
-        createdAt: new Date(),
-      },
-      {
-        id: 3,
-        email: 'livreur@kinder.com',
-        password: bcrypt.hashSync('e60 competition nchlh', 10),
-        name: 'Delivery Person',
-        phone: '+213 555 000 002',
-        role: 'livreur' as const,
-        active: true,
-        createdAt: new Date(),
       }
     ];
 
     defaultUsers.forEach(user => {
       this.users.set(user.id, user);
     });
-    this.userIdCounter = 4; // Start from 4 for new users
+    this.userIdCounter = 2; // Start from 2 for new users
 
     const categoriesData = [
       {
