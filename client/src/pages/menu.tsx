@@ -151,11 +151,11 @@ export default function MenuPage() {
                           {items.length} {items.length === 1 ? 'item' : 'items'}
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                         {items.map((item) => (
                           <Card
                             key={item.id}
-                            className="hover-elevate transition-all duration-300 overflow-hidden flex flex-col h-full"
+                            className="hover-elevate transition-all duration-300 overflow-hidden flex flex-col"
                             data-testid={`menu-item-${item.id}`}
                           >
                             {item.imageUrl && (
@@ -168,9 +168,9 @@ export default function MenuPage() {
                                 />
                               </div>
                             )}
-                            <CardHeader className="flex-1">
+                            <CardHeader className="p-4">
                               <div className="space-y-2">
-                                <CardTitle className="text-xl flex items-center gap-2 flex-wrap">
+                                <CardTitle className="text-base md:text-lg flex items-center gap-2 flex-wrap">
                                   {item.name}
                                   {item.popular && (
                                     <Badge variant="secondary" className="text-xs">
@@ -178,12 +178,12 @@ export default function MenuPage() {
                                     </Badge>
                                   )}
                                 </CardTitle>
-                                <CardDescription className="text-sm leading-relaxed line-clamp-2">
+                                <CardDescription className="text-xs md:text-sm leading-relaxed line-clamp-2">
                                   {item.description}
                                 </CardDescription>
-                                <div className="pt-2">
+                                <div className="pt-1">
                                   <span
-                                    className="text-2xl font-bold text-primary"
+                                    className="text-lg md:text-xl font-bold text-primary"
                                     data-testid={`price-${item.id}`}
                                   >
                                     {item.price} DZD
@@ -191,13 +191,14 @@ export default function MenuPage() {
                                 </div>
                               </div>
                             </CardHeader>
-                            <CardContent className="pt-0 mt-auto">
+                            <CardContent className="p-4 pt-0">
                               <Button 
                                 onClick={() => handleViewDetails(item)}
-                                className="w-full"
+                                className="w-full text-xs md:text-sm"
+                                size="sm"
                                 data-testid={`button-view-details-${item.id}`}
                               >
-                                <Info className="w-4 h-4 mr-2" />
+                                <Info className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                                 View Details
                               </Button>
                             </CardContent>
