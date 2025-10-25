@@ -151,11 +151,11 @@ export default function MenuPage() {
                           {items.length} {items.length === 1 ? 'item' : 'items'}
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {items.map((item) => (
                           <Card
                             key={item.id}
-                            className="hover-elevate transition-shadow overflow-hidden flex flex-col"
+                            className="hover-elevate transition-all duration-300 overflow-hidden flex flex-col h-full"
                             data-testid={`menu-item-${item.id}`}
                           >
                             {item.imageUrl && (
@@ -191,7 +191,7 @@ export default function MenuPage() {
                                 </div>
                               </div>
                             </CardHeader>
-                            <CardContent className="pt-0">
+                            <CardContent className="pt-0 mt-auto">
                               <Button 
                                 onClick={() => handleViewDetails(item)}
                                 className="w-full"
